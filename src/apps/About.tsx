@@ -21,7 +21,7 @@ export default function About() {
       <div className="scroll flex-1 min-h-0">
         <div className={`grid ${mobile ? '' : 'grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]'} min-h-full`}>
           <motion.div initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }} className={`relative ${mobile ? 'h-[420px]' : 'min-h-full'}`}>
-            <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="" className="absolute inset-0" position="50% 20%" label={mobile ? undefined : 'B.S.'} big />
+            <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="" className="absolute inset-0" position={portraits.hero.position} label={mobile ? undefined : 'B.S.'} big />
             <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
             <div className="absolute left-5 bottom-5 text-white">
               <div className="text-[10.5px] tracking-[0.2em] font-semibold opacity-75">{tt('ЗЕЛЕНОДОЛЬСК → МОСКВА', 'ZELENODOLSK → MOSCOW')}</div>

@@ -371,9 +371,9 @@ export const albums = [
  */
 export const portraits = {
   /** Ч/б студийный портрет в солнцезащитных очках — главный (About, Safari, About This Mac). */
-  hero: { src: '/photos/portrait-studio.jpg', palette: ['#f2f2f2', '#9a9a9a', '#111111'] as [string, string, string] },
+  hero: { src: '/photos/portrait-studio.jpg', position: '66% 18%', palette: ['#f2f2f2', '#9a9a9a', '#111111'] as [string, string, string] },
   /** Портрет анфас — аватар (Contacts, Resume, Mail). */
-  avatar: { src: '/photos/portrait-face.jpg', palette: ['#efe9e1', '#b9a999', '#2a2a2a'] as [string, string, string] },
+  avatar: { src: '/photos/portrait-face.jpg', position: '50% 35%', palette: ['#efe9e1', '#b9a999', '#2a2a2a'] as [string, string, string] },
 }
 
 export const photos: Photo[] = [

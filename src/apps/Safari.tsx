@@ -92,7 +92,7 @@ export default function Safari() {
               ))}
             </div>
           </div>
-          <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="rounded-[22px]" className="aspect-[4/5] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)]" position="50% 20%" />
+          <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="rounded-[22px]" className="aspect-[4/5] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.5)]" position={portraits.hero.position} />
         </section>
 
         <Section id="about" n="01" title={label.about}>

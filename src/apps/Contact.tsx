@@ -42,7 +42,7 @@ export default function Contact() {
         <div className="relative h-[150px] bg-gradient-to-br from-[#d7b48f] via-[#b08a66] to-[#5e4733] grain" />
         <div className="px-6 sm:px-8 -mt-14 relative">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 22 }}>
-            <PhotoArt src={portraits.avatar.src} palette={portraits.avatar.palette} rounded="rounded-full" className="size-[104px] ring-4 ring-win-solid shadow-xl" position="50% 30%" hint={false} />
+            <PhotoArt src={portraits.avatar.src} palette={portraits.avatar.palette} rounded="rounded-full" className="size-[104px] ring-4 ring-win-solid shadow-xl" position={portraits.avatar.position} hint={false} />
           </motion.div>
           <h1 className="serif text-[34px] leading-none mt-4">{t(profile.name)}</h1>
           <div className="text-[13px] text-ink-2 mt-1.5">Career / Business Development</div>

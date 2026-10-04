@@ -69,7 +69,7 @@ export function ResumeDocument() {
   return (
     <article className="resume-page bg-white text-[#1d1d1f] selectable" style={{ width: PAGE_W, minHeight: 1123, padding: '56px 60px', fontSize: 11.5, lineHeight: 1.5 }}>
       <header className="flex items-start gap-6 pb-6 border-b border-black/10">
-        <PhotoArt src={portraits.avatar.src} palette={portraits.avatar.palette} rounded="rounded-full" className="size-[84px] flex-none" position="50% 30%" hint={false} />
+        <PhotoArt src={portraits.avatar.src} palette={portraits.avatar.palette} rounded="rounded-full" className="size-[84px] flex-none" position={portraits.avatar.position} hint={false} />
         <div className="flex-1">
           <h1 className="serif text-[40px] leading-none tracking-tight">{t(profile.name)}</h1>
           <div className="mt-2 text-[13px] font-medium">{t(profile.currentRole)}</div>

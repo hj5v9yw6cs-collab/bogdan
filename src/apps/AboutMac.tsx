@@ -20,7 +20,7 @@ export default function AboutMac() {
   return (
     <div className="h-full bg-win-solid flex flex-col items-center px-8 pt-10 pb-7 text-center">
       <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
-        <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="rounded-full" className="size-[110px] shadow-xl" position="50% 18%" hint={false} />
+        <PhotoArt src={portraits.hero.src} palette={portraits.hero.palette} rounded="rounded-full" className="size-[110px] shadow-xl" position={portraits.hero.position} hint={false} />
       </motion.div>
       <div className="text-[22px] font-semibold mt-5">MacBook Bogdan</div>
       <div className="text-[12px] text-ink-3">{t(profile.name)}</div>
