@@ -49,9 +49,9 @@ export const profile = {
 /* ───────────────────────── Контакты ───────────────────────── */
 // NEED: заполните реальные контакты. Пустая строка = пометка «нужны данные».
 export const contacts = {
-  email: '',
-  telegram: '',
-  instagram: '',
+  email: 'bogdanstarogorodcev@gmail.com',
+  telegram: 'starogorodcev',
+  instagram: 'starogorodcev',
   linkedin: '',
   site: 'bogdanstarogorodtsev.com',
 }
@@ -126,7 +126,7 @@ const sber: Employer = {
     { date: '16.01.2023', kind: 'promotion', segment: 'key', city: null, title: l('Старший менеджер по работе с ключевыми клиентами', 'Senior Key Account Manager') },
     { date: '12.07.2023', kind: 'promotion', segment: 'key', city: null, title: l('Главный менеджер по работе с ключевыми клиентами', 'Chief Key Account Manager') },
     { date: '14.10.2024', kind: 'transfer', segment: 'corporate', city: l('Самара', 'Samara'), title: l('Старший клиентский менеджер по работе с корпоративными клиентами АПК', 'Senior Client Manager, Corporate Agribusiness (APK) Clients') },
-    { date: null, kind: 'end', segment: 'corporate', title: l('Завершение работы в Сбербанке', 'End of employment at Sberbank') }, // NEED: дата
+    { date: '01.04.2025', kind: 'end', segment: 'corporate', title: l('Завершение работы в Сбербанке', 'End of employment at Sberbank'), note: l('Со следующего дня — Т-Банк', 'Joined T-Bank the next day') },
   ],
   responsibilities: [],
   achievements: [],
@@ -184,12 +184,17 @@ const early: Employer = {
   color: '#8E8E93',
   gradient: 'linear-gradient(135deg,#1c1c1e 0%,#3a3a3c 60%,#8e8e93 120%)',
   summary: l(
-    'Первые работы до Сбербанка. Подробности — из выписки СФР.',
-    'First jobs before Sberbank. Details — from the official record.',
+    'Первые работы до Сбербанка (2020–2021): контакт-центр ООО «СИТИСТАФФ» и предотвращение потерь в ООО «ЛАБИРИНТ-ВОЛГА». С 16.04.2021 — Сбербанк.',
+    'First jobs before Sberbank (2020–2021): a contact center at CITYSTAFF LLC and loss prevention at LABIRINT-VOLGA LLC. From 16.04.2021 — Sberbank.',
   ),
-  // NEED: работодатели, даты и должности раннего опыта из выписки СФР
+  // По выписке СФР. Города — NEED.
   records: [
-    { date: null, kind: 'hire', segment: 'early', city: null, title: l(NEED, NEED) },
+    { date: '10.06.2020', kind: 'hire', segment: 'early', city: null, title: l('Оператор-специалист контакт-центра', 'Contact Center Specialist'), unit: l('ООО «СИТИСТАФФ»', 'CITYSTAFF LLC') },
+    { date: '06.11.2020', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
+    { date: '16.11.2020', kind: 'hire', segment: 'early', city: null, title: l('Оператор-специалист контакт-центра', 'Contact Center Specialist'), unit: l('ООО «СИТИСТАФФ»', 'CITYSTAFF LLC'), note: l('Повторный приём', 'Rehired') },
+    { date: '15.12.2020', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
+    { date: '22.01.2021', kind: 'hire', segment: 'early', city: null, title: l('Специалист по предотвращению потерь', 'Loss Prevention Specialist'), unit: l('ООО «ЛАБИРИНТ-ВОЛГА»', 'LABIRINT-VOLGA LLC') },
+    { date: '31.03.2021', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
   ],
   responsibilities: [],
   achievements: [],
@@ -214,9 +219,9 @@ export type Stage = {
   current?: boolean
 }
 
-// year '2020' для первых работ — со слов Богдана; NEED: сверить с выпиской СФР
 export const stages: Stage[] = [
-  { id: 'early', year: '2020', employer: 'early', label: l('Первые работы', 'First jobs'), segment: 'early', records: [0] },
+  { id: 'early-cc', year: '2020', employer: 'early', label: l('Контакт-центр · СИТИСТАФФ', 'Contact center · CITYSTAFF'), segment: 'early', records: [0, 1, 2, 3] },
+  { id: 'early-lp', year: '2021', employer: 'early', label: l('Предотвращение потерь · ЛАБИРИНТ-ВОЛГА', 'Loss prevention · LABIRINT-VOLGA'), segment: 'early', records: [4, 5] },
   { id: 'sber-sales', year: '2021', employer: 'sber', label: l('Мобильные продажи → клиентский менеджер', 'Mobile Sales → Client Manager'), segment: 'sales', records: [0, 1] },
   { id: 'sber-premium', year: '2022', employer: 'sber', label: l('Премьер · премиальный сегмент', 'Premier · Premium segment'), segment: 'premium', records: [2, 3, 4] },
   { id: 'sber-corp', year: '2022', employer: 'sber', label: l('Корпоративные клиенты', 'Corporate clients'), segment: 'corporate', records: [5] },
@@ -397,15 +402,19 @@ export const photos: Photo[] = [
  * Описания услуг — продуктовый текст. Цена и длительность: null = NEED.
  */
 export const services = [
-  { id: 'audit', icon: 'ScanSearch', title: l('Career Audit', 'Career Audit'), duration: null as L | null, price: null as string | null, text: l('Разбор текущей карьерной точки: сильные стороны, пробелы и реальные варианты роста.', 'A review of where you are now: strengths, gaps and realistic growth options.') },
-  { id: 'interview', icon: 'MessagesSquare', title: l('Interview Preparation', 'Interview Preparation'), duration: null as L | null, price: null as string | null, text: l('Подготовка к собеседованию: тренировочное интервью, разбор ответов и обратная связь.', 'Interview prep: a mock interview, answer review and feedback.') },
-  { id: 'strategy', icon: 'Compass', title: l('Career Strategy', 'Career Strategy'), duration: null as L | null, price: null as string | null, text: l('Карьерная стратегия: цели, траектория и конкретный план действий.', 'Career strategy: goals, trajectory and a concrete action plan.') },
-  { id: 'cv', icon: 'FileUser', title: l('CV / Personal Brand', 'CV / Personal Brand'), duration: null as L | null, price: null as string | null, text: l('Упаковка опыта: резюме, профиль и история, которую хочется рассказать.', 'Positioning your experience: CV, profile and a story worth telling.') },
-  { id: 'transition', icon: 'Repeat', title: l('Career Transition', 'Career Transition'), duration: null as L | null, price: null as string | null, text: l('Смена трека: из сегмента в сегмент, из компании в компанию, из города в город.', 'Switching tracks: between segments, companies and cities.') },
+  { id: 'audit', icon: 'ScanSearch', title: l('Career Audit', 'Career Audit'), duration: null as L | null, price: 'TBD' as string | null, text: l('Разбор текущей карьерной точки: сильные стороны, пробелы и реальные варианты роста.', 'A review of where you are now: strengths, gaps and realistic growth options.') },
+  { id: 'interview', icon: 'MessagesSquare', title: l('Interview Preparation', 'Interview Preparation'), duration: null as L | null, price: 'TBD' as string | null, text: l('Подготовка к собеседованию: тренировочное интервью, разбор ответов и обратная связь.', 'Interview prep: a mock interview, answer review and feedback.') },
+  { id: 'strategy', icon: 'Compass', title: l('Career Strategy', 'Career Strategy'), duration: null as L | null, price: 'TBD' as string | null, text: l('Карьерная стратегия: цели, траектория и конкретный план действий.', 'Career strategy: goals, trajectory and a concrete action plan.') },
+  { id: 'cv', icon: 'FileUser', title: l('CV / Personal Brand', 'CV / Personal Brand'), duration: null as L | null, price: 'TBD' as string | null, text: l('Упаковка опыта: резюме, профиль и история, которую хочется рассказать.', 'Positioning your experience: CV, profile and a story worth telling.') },
+  { id: 'transition', icon: 'Repeat', title: l('Career Transition', 'Career Transition'), duration: null as L | null, price: 'TBD' as string | null, text: l('Смена трека: из сегмента в сегмент, из компании в компанию, из города в город.', 'Switching tracks: between segments, companies and cities.') },
 ] as const
 
-/** Куда ведёт «Book a consultation». Пустая строка = встроенная форма-заглушка. NEED */
-export const bookingUrl = ''
+/**
+ * Куда ведёт «Book a consultation». По умолчанию — Telegram из contacts.
+ * Пока username не указан — открывается встроенная форма (заявка уходит на email).
+ * Позже можно заменить на Cal.com: bookingUrl = 'https://cal.com/...'
+ */
+export const bookingUrl: string = contacts.telegram ? `https://t.me/${contacts.telegram}` : ''
 
 /* ───────────────────────── Mail (отзывы) ─────────────────────────
  * placeholder: true — шаблон, на сайте помечается как «пример».
