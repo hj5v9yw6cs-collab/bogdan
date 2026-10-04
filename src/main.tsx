@@ -14,9 +14,8 @@ import '@fontsource/jetbrains-mono/600.css'
 import './index.css'
 import App from './App'
 import { LangProvider } from './lib/i18n'
-import { SystemProvider } from './store/system'
 import { WindowsProvider } from './store/windows'
-import { ResumeDocument } from './apps/Resume'
+import { ResumeDocument } from './components/ResumeDocument'
 
 // ?print=resume renders only the CV page — used to generate the downloadable PDF.
 const printResume = new URLSearchParams(location.search).get('print') === 'resume'
@@ -26,13 +25,11 @@ createRoot(document.getElementById('root')!).render(
     <LangProvider>
       <MotionConfig reducedMotion="user">
         {printResume ? (
-          <div className="mac" data-theme="light" style={{ background: '#fff' }}><ResumeDocument /></div>
+          <div style={{ background: '#fff' }}><ResumeDocument /></div>
         ) : (
-          <SystemProvider>
-            <WindowsProvider>
-              <App />
-            </WindowsProvider>
-          </SystemProvider>
+          <WindowsProvider>
+            <App />
+          </WindowsProvider>
         )}
       </MotionConfig>
     </LangProvider>

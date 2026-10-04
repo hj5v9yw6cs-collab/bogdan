@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Camera } from 'lucide-react'
 import { SHOW_NEED_MARKERS } from '../data/content'
 
@@ -7,7 +7,7 @@ import { SHOW_NEED_MARKERS } from '../data/content'
  * Replacing a placeholder = dropping a file into /public/photos (see content.ts).
  */
 export function PhotoArt({
-  src, palette, label, sub, className = '', rounded = 'rounded-xl', big = false, position = 'center', hint = true,
+  src, palette, label, sub, className = '', rounded = 'rounded-xl', big = false, position = 'center', hint = true, style,
 }: {
   src?: string
   palette: [string, string, string]
@@ -19,13 +19,14 @@ export function PhotoArt({
   position?: string
   /** Show the expected file path when the photo is missing. */
   hint?: boolean
+  style?: CSSProperties
 }) {
   const [failed, setFailed] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [a, b, c] = palette
   const showImg = src && !failed
   return (
-    <div title={src && failed ? `public${src}` : undefined} className={`${/\b(absolute|fixed)\b/.test(className) ? '' : 'relative'} overflow-hidden ${rounded} ${className}`} style={{ background: `radial-gradient(120% 90% at 20% 10%, ${a} 0%, transparent 60%), radial-gradient(100% 80% at 90% 90%, ${c} 0%, transparent 55%), linear-gradient(160deg, ${a}, ${b} 55%, ${c})` }}>
+    <div title={src && failed ? `public${src}` : undefined} className={`${/\b(absolute|fixed)\b/.test(className) ? '' : 'relative'} overflow-hidden ${rounded} ${className}`} style={{ background: `radial-gradient(120% 90% at 20% 10%, ${a} 0%, transparent 60%), radial-gradient(100% 80% at 90% 90%, ${c} 0%, transparent 55%), linear-gradient(160deg, ${a}, ${b} 55%, ${c})`, ...style }}>
       {showImg && (
         <img
           src={src}

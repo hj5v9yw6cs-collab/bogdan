@@ -1,8 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from 'react'
 
-export type AppId =
-  | 'finder' | 'safari' | 'mail' | 'photos' | 'calendar' | 'notes' | 'music' | 'terminal'
-  | 'resume' | 'company' | 'timeline' | 'contact' | 'consulting' | 'about' | 'doc' | 'aboutmac'
+export type AppId = 'info' | 'alert' | 'cv'
 
 export type WinParams = Record<string, string>
 

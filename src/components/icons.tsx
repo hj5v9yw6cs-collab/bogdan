@@ -9,6 +9,7 @@ import {
 export type IconKind =
   | 'finder' | 'safari' | 'mail' | 'photos' | 'calendar' | 'notes' | 'music' | 'terminal'
   | 'consulting' | 'contacts' | 'timeline' | 'preview' | 'trash' | 'settings' | 'about'
+  | 'sheets' | 'crm' | 'slides' | 'warning' | 'instagram' | 'telegram' | 'lang'
 
 function Tile({ size, children, defs, bg }: { size: number; children: ReactNode; defs?: ReactNode; bg: string }) {
   const id = useId().replace(/:/g, '')
@@ -180,6 +181,73 @@ export function AppIcon({ kind, size = 56 }: { kind: IconKind; size?: number }) 
           <linearGradient id={g('a')} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#1d1d1f" /><stop offset="1" stopColor="#3a3a40" /></linearGradient>
         }>
           <text x="50" y="64" textAnchor="middle" fontSize="44" fill="#f5f5f7" fontFamily="'Cormorant Garamond', Georgia, serif" fontStyle="italic">BS</text>
+        </Tile>
+      )
+    case 'sheets':
+      return (
+        <Tile size={size} bg={`url(#${g('sh')})`} defs={
+          <linearGradient id={g('sh')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2fbf71" /><stop offset="1" stopColor="#0e7a43" /></linearGradient>
+        }>
+          <rect x="22" y="24" width="56" height="52" rx="5" fill="#fff" />
+          {[37, 50, 63].map((y) => <line key={y} x1="22" y1={y} x2="78" y2={y} stroke="#0e7a43" strokeOpacity=".35" strokeWidth="1.6" />)}
+          {[41, 59].map((x) => <line key={x} x1={x} y1="24" x2={x} y2="76" stroke="#0e7a43" strokeOpacity=".35" strokeWidth="1.6" />)}
+          <rect x="22" y="24" width="56" height="13" rx="5" fill="#0e7a43" opacity=".85" />
+        </Tile>
+      )
+    case 'crm':
+      return (
+        <Tile size={size} bg={`url(#${g('cr')})`} defs={
+          <linearGradient id={g('cr')} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#5b8cff" /><stop offset="1" stopColor="#2337c6" /></linearGradient>
+        }>
+          <path d="M24 28 H76 L58 52 V72 L42 78 V52 Z" fill="#fff" />
+        </Tile>
+      )
+    case 'slides':
+      return (
+        <Tile size={size} bg={`url(#${g('sl')})`} defs={
+          <linearGradient id={g('sl')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ff9a3c" /><stop offset="1" stopColor="#e2541b" /></linearGradient>
+        }>
+          <rect x="20" y="26" width="60" height="40" rx="4" fill="#fff" />
+          <rect x="28" y="50" width="7" height="10" fill="#e2541b" />
+          <rect x="39" y="42" width="7" height="18" fill="#e2541b" />
+          <rect x="50" y="35" width="7" height="25" fill="#e2541b" />
+          <line x1="50" y1="66" x2="50" y2="76" stroke="#fff" strokeWidth="3" />
+          <line x1="40" y1="78" x2="60" y2="78" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
+        </Tile>
+      )
+    case 'warning':
+      return (
+        <svg width={size} height={size} viewBox="0 0 100 100" className="app-icon-svg" aria-hidden>
+          <defs><linearGradient id={g('w')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#ffe066" /><stop offset="1" stopColor="#f5b400" /></linearGradient></defs>
+          <path d="M50 12 Q54 12 56 16 L92 80 Q95 88 86 88 H14 Q5 88 8 80 L44 16 Q46 12 50 12 Z" fill={`url(#${g('w')})`} stroke="#d99a00" strokeWidth="1.5" />
+          <rect x="45.5" y="36" width="9" height="30" rx="4.5" fill="#1d1d1f" />
+          <circle cx="50" cy="76" r="5" fill="#1d1d1f" />
+        </svg>
+      )
+    case 'instagram':
+      return (
+        <Tile size={size} bg={`url(#${g('ig')})`} defs={
+          <radialGradient id={g('ig')} cx=".3" cy="1.05" r="1.2"><stop offset="0" stopColor="#fdd56b" /><stop offset=".35" stopColor="#f5793a" /><stop offset=".6" stopColor="#d6249f" /><stop offset="1" stopColor="#5a3fd6" /></radialGradient>
+        }>
+          <rect x="24" y="24" width="52" height="52" rx="15" fill="none" stroke="#fff" strokeWidth="6" />
+          <circle cx="50" cy="50" r="12" fill="none" stroke="#fff" strokeWidth="6" />
+          <circle cx="65.5" cy="34.5" r="3.6" fill="#fff" />
+        </Tile>
+      )
+    case 'telegram':
+      return (
+        <Tile size={size} bg={`url(#${g('tg')})`} defs={
+          <linearGradient id={g('tg')} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3fb5f2" /><stop offset="1" stopColor="#1c8ad6" /></linearGradient>
+        }>
+          <path d="M22 49 L74 28 Q78 27 77 31 L68 72 Q67 76 63 74 L50 64 L43 71 Q41 72 41 70 L42 59 L66 37 L37 55 L24 51 Q20 50 22 49 Z" fill="#fff" />
+        </Tile>
+      )
+    case 'lang':
+      return (
+        <Tile size={size} bg="#f4f4f6">
+          <circle cx="50" cy="50" r="26" fill="none" stroke="#1d1d1f" strokeWidth="4" />
+          <ellipse cx="50" cy="50" rx="11" ry="26" fill="none" stroke="#1d1d1f" strokeWidth="4" />
+          <line x1="24" y1="50" x2="76" y2="50" stroke="#1d1d1f" strokeWidth="4" />
         </Tile>
       )
     case 'trash':

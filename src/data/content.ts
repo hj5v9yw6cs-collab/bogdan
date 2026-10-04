@@ -232,9 +232,6 @@ export const stages: Stage[] = [
   { id: 'tbank-midlarge', year: '2026 —', employer: 'tbank', label: l('Средний и крупный бизнес', 'Mid & large business'), segment: 'midlarge', records: [2], current: true },
 ]
 
-/** Траектория роста — для визуализации «не просто смена работодателей». */
-export const growthArc: SegmentId[] = ['sales', 'premium', 'corporate', 'key', 'midlarge', 'bizdev']
-
 /** Города — без годов (годы проживания: NEED). */
 export const cities: { id: string; name: L; note: L | null; years: string | null }[] = [
   { id: 'zel', name: l('Зеленодольск', 'Zelenodolsk'), years: null, note: l('Родной город. Школа №4, школа журналистики, гимнастика, тяжёлая атлетика и музыкальная школа.', 'Hometown. School No. 4, a journalism school, gymnastics, weightlifting and music school.') },
@@ -261,94 +258,6 @@ export const childhood: { id: string; title: L; note: L | null }[] = [
   { id: 'guitar', title: l('Музыкальная школа, класс гитары', 'Music school, guitar'), note: l('Обучение не завершено', 'Not completed') },
 ]
 
-/* ───────────────────────── Документы (Finder) ───────────────────────── */
-
-export type Doc = {
-  id: string
-  file: string
-  kind: 'txt' | 'md' | 'key'
-  title: L
-  subtitle?: L
-  body: L[] // абзацы; строка NEED → пометка «нужны данные»
-  tags?: string[]
-}
-
-export const experienceDocs: Doc[] = [
-  {
-    id: 'segments', file: 'Segments.md', kind: 'md',
-    title: l('С кем я работал', 'Who I have worked with'),
-    subtitle: l('По названиям должностей из выписки', 'Based on job titles in the official record'),
-    body: [
-      l('Розничные клиенты — мобильные продажи и клиентский сервис (Сбербанк, 2021).', 'Retail clients — mobile sales and client service (Sberbank, 2021).'),
-      l('Премиальный сегмент — «Премьер» (Сбербанк, 2022).', 'Premium segment — “Premier” (Sberbank, 2022).'),
-      l('Корпоративные клиенты — привлечение и работа с АПК (Сбербанк, 2022, 2024).', 'Corporate clients — acquisition and agribusiness (Sberbank, 2022, 2024).'),
-      l('Ключевые клиенты (Сбербанк, 2023).', 'Key clients (Sberbank, 2023).'),
-      l('Средний и крупный бизнес (Т-Банк, 2025–2026).', 'Mid & large business (T-Bank, 2025–2026).'),
-      l('PropTech-партнёрства и развитие бизнеса (Домиленд, 2026).', 'PropTech partnerships and business development (Domilend, 2026).'),
-    ],
-    tags: ['Retail', 'Premium', 'Corporate', 'Key Accounts', 'SME', 'BizDev'],
-  },
-  {
-    id: 'skills', file: 'Skills.txt', kind: 'txt',
-    title: l('Навыки', 'Skills'),
-    body: [l(NEED, NEED)],
-  },
-  {
-    id: 'achievements', file: 'Achievements.md', kind: 'md',
-    title: l('Достижения', 'Achievements'),
-    body: [l(NEED, NEED)],
-  },
-]
-
-export const projectDocs: Doc[] = [
-  {
-    id: 'consulting', file: 'Career Consulting.key', kind: 'key',
-    title: l('Career Consulting', 'Career Consulting'),
-    subtitle: l('Карьерные консультации', 'Career consultations'),
-    body: [
-      l('Консультации по карьере: аудит, подготовка к интервью, стратегия, резюме и смена трека.', 'Career consulting: audit, interview prep, strategy, CV and career transitions.'),
-      l('Опыт — 9 кадровых записей в Сбербанке и путь от розницы до среднего и крупного бизнеса.', 'Experience — 9 HR records at Sberbank and a path from retail to mid & large business.'),
-    ],
-    tags: ['Consulting', '1:1'],
-  },
-  {
-    id: 'brand', file: 'Personal Brand.md', kind: 'md',
-    title: l('Личный бренд', 'Personal brand'),
-    subtitle: l('Этот сайт', 'This website'),
-    body: [
-      l('Этот Mac — интерактивная история карьеры: Finder, Timeline, Resume и Terminal вместо обычного резюме.', 'This Mac is an interactive career story: Finder, Timeline, Resume and Terminal instead of a regular CV.'),
-    ],
-    tags: ['Brand'],
-  },
-  {
-    id: 'finance', file: 'Finance.md', kind: 'md',
-    title: l('Финансы', 'Finance'),
-    subtitle: l('Следующая глава', 'The next chapter'),
-    body: [
-      l('2026 — поступление в Московский колледж бизнес-технологий на направление «Финансы».', '2026 — enrolled in the Finance program at Moscow College of Business Technologies.'),
-    ],
-    tags: ['Finance', 'Growth'],
-  },
-]
-
-export const educationDocs: Doc[] = [
-  ...education.map<Doc>((e) => ({
-    id: `edu-${e.id}`, file: `${e.title.en.replace(/[^A-Za-z0-9 ]/g, '').trim()}.txt`, kind: 'txt',
-    title: e.title, subtitle: e.place,
-    body: [
-      e.period ? l(`Период: ${e.period}`, `Period: ${e.period}`) : l(`Период: ${NEED}`, `Period: ${NEED}`),
-      ...(e.status ? [e.status] : []),
-    ],
-  })),
-  {
-    id: 'childhood', file: 'Childhood.md', kind: 'md',
-    title: l('Детство', 'Childhood'), subtitle: l('Зеленодольск', 'Zelenodolsk'),
-    body: childhood.map((c) => (c.note ? l(`${c.title.ru} — ${c.note.ru.toLowerCase()}`, `${c.title.en} — ${c.note.en.toLowerCase()}`) : c.title)),
-  },
-]
-
-export const allDocs: Doc[] = [...experienceDocs, ...projectDocs, ...educationDocs]
-
 /* ───────────────────────── Фото ─────────────────────────
  * Чтобы заменить placeholder: положите файл в /public/photos/ и укажите src: '/photos/kazan.jpg'.
  * caption/year: null → «нужны данные».
@@ -362,13 +271,6 @@ export type Photo = {
   src?: string
   palette: [string, string, string]
 }
-
-export const albums = [
-  { id: 'all' as const, name: l('Все фото', 'Library') },
-  { id: 'cities' as const, name: l('Города', 'Cities') },
-  { id: 'work' as const, name: l('Работа', 'Work') },
-  { id: 'life' as const, name: l('Жизнь', 'Life') },
-]
 
 /**
  * Портреты Богдана. Положите файлы с ЭТИМИ именами в /public/photos/ —
@@ -416,33 +318,6 @@ export const services = [
  */
 export const bookingUrl: string = contacts.telegram ? `https://t.me/${contacts.telegram}` : ''
 
-/* ───────────────────────── Mail (отзывы) ─────────────────────────
- * placeholder: true — шаблон, на сайте помечается как «пример».
- * Замените реальными отзывами и уберите placeholder.
- */
-export const mails = [
-  { id: 'm1', placeholder: true, from: l('Клиент', 'Client'), role: l('Пример письма', 'Sample message'), subject: l('Career consultation request', 'Career consultation request'), preview: l('Здесь будет запрос на консультацию…', 'A consultation request will appear here…'), date: '09:41', unread: true, body: l(`Здесь будет реальное письмо-запрос на консультацию.\n\n${NEED}`, `A real consultation request will appear here.\n\n${NEED}`) },
-  { id: 'm2', placeholder: true, from: l('Клиент', 'Client'), role: l('Пример отзыва', 'Sample review'), subject: l('Great meeting', 'Great meeting'), preview: l('Здесь будет отзыв после встречи…', 'A review after a meeting will appear here…'), date: l('Вчера', 'Yesterday').ru, unread: true, body: l(`Здесь будет реальный отзыв после встречи.\n\n${NEED}`, `A real post-meeting review will appear here.\n\n${NEED}`) },
-  { id: 'm3', placeholder: true, from: l('Клиент', 'Client'), role: l('Пример отзыва', 'Sample review'), subject: l('Thank you for the advice', 'Thank you for the advice'), preview: l('Здесь будет благодарность за совет…', 'A thank-you note will appear here…'), date: '02.10', unread: false, body: l(`Здесь будет реальный отзыв.\n\n${NEED}`, `A real review will appear here.\n\n${NEED}`) },
-]
-
-/* ───────────────────────── Notes ───────────────────────── */
-
-export const notes = [
-  { id: 'n1', title: l('Маршрут', 'The route'), date: l('Сегодня', 'Today'), body: [l('Маршрут', 'The route'), l('Зеленодольск → Йошкар-Ола → Казань → Самара → Москва', 'Zelenodolsk → Yoshkar-Ola → Kazan → Samara → Moscow'), l('Розница → Премьер → корпоративные → ключевые → средний и крупный бизнес → развитие бизнеса', 'Retail → Premier → corporate → key → mid & large business → business development')] },
-  { id: 'n2', title: l('Детство', 'Childhood'), date: l('Вчера', 'Yesterday'), body: [l('Детство', 'Childhood'), l('Гимнастика, потом тяжёлая атлетика.', 'Gymnastics, then weightlifting.'), l('Музыкальная школа — класс гитары (не окончил).', 'Music school — guitar (did not finish).'), l('Школа журналистики в Зеленодольске.', 'School of journalism in Zelenodolsk.')] },
-  { id: 'n3', title: l('Принципы', 'Principles'), date: l('—', '—'), body: [l('Принципы', 'Principles'), l(NEED, NEED)] },
-]
-
-/* ───────────────────────── Music (декоративный плеер) ───────────────────────── */
-
-export const tracks = [
-  { title: 'Deep Work', artist: 'Focus', len: 214, colors: ['#ff5f6d', '#ffc371'] },
-  { title: 'Night Drive', artist: 'Moscow', len: 187, colors: ['#4568dc', '#b06ab3'] },
-  { title: 'Volga', artist: 'Zelenodolsk', len: 242, colors: ['#11998e', '#38ef7d'] },
-  { title: 'Next Chapter', artist: 'Bogdan', len: 201, colors: ['#232526', '#fc3f1d'] },
-]
-
 /* ───────────────────────── Хелперы ───────────────────────── */
 
 export const isNeed = (v: string | null | undefined) => v == null || v === '' || v.includes(NEED)
@@ -453,8 +328,6 @@ export function ageFrom(iso: string, now = new Date()) {
   if (now.getMonth() < b.getMonth() || (now.getMonth() === b.getMonth() && now.getDate() < b.getDate())) a--
   return a
 }
-
-export const yearOf = (date: string | null) => (date ? date.slice(-4) : null)
 
 /** Период работодателя по записям: «04.2021 — …». */
 export function employerPeriod(e: Employer): { from: string | null; to: string | null; current: boolean } {

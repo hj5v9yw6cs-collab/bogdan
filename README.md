@@ -1,6 +1,6 @@
-# The MacBook of Bogdan Starogorodtsev
+# The Desktop of Bogdan Starogorodtsev
 
-Интерактивный персональный сайт в виде «цифрового MacBook»: рабочий стол macOS, Finder, Dock, окна, Safari, Terminal — внутри которых рассказана карьера и история Богдана Старогородцева.
+Персональный сайт в виде рабочего стола macOS (по мотивам bychudy.com): на весь экран — размытый портрет, по столу разбросаны «файлы»-обложки этапов карьеры, городов и фото. Клик по файлу открывает окно «Информация», в Dock — CV, галерея, контакты и шуточные системные диалоги.
 
 ## Запуск
 
@@ -11,7 +11,7 @@ npm run build      # production-сборка в dist/
 npm run preview    # посмотреть сборку
 ```
 
-Стек: **React 19 + TypeScript + Vite + Tailwind CSS v4 + Motion** (бывш. Framer Motion), иконки — Lucide и собственные SVG, шрифты — self-hosted через `@fontsource` (Inter, Cormorant Garamond, JetBrains Mono — с кириллицей). Vite выбран как самый быстрый и простой сборщик для SPA без серверной части — сайт собирается в статику и хостится где угодно (Vercel, Netlify, GitHub Pages, любой CDN).
+Стек: **React 19 + TypeScript + Vite + Tailwind CSS v4 + Motion**. Иконки — собственные SVG, шрифты — системные (SF Pro на Mac) с запасным Inter.
 
 ## Как обновлять контент
 
@@ -34,21 +34,19 @@ npm run preview    # посмотреть сборку
 
 ```
 src/
-  data/content.ts        ← весь контент
-  data/fs.ts             ← «файловая система» Finder (папки и файлы)
-  store/windows.tsx      ← централизованный менеджер окон (open/close/minimize/focus/zoom)
-  store/system.tsx       ← тема, обои, Wi‑Fi, яркость, Spotlight
-  components/            ← MacBook, Desktop, MenuBar, Dock, Window, WindowManager, Spotlight, Boot, иконки
-  apps/                  ← Finder, Safari, Mail, Photos, Calendar, Notes, Music, Terminal,
-                           Resume, Company (Career), Timeline, Contact, Consulting, About, Doc, AboutMac
-  apps/registry.tsx      ← реестр приложений (иконка, размер окна, тип заголовка)
+  data/content.ts        ← все факты: профиль, контакты, карьера по выписке СФР, города, образование, фото, услуги
+  data/desktop.ts        ← подача: какие файлы лежат на столе, их обложки и координаты, тексты окон, Dock
+  store/windows.tsx      ← менеджер окон (открыть/закрыть/фокус/z-order)
+  components/Desk.tsx    ← рабочий стол: обои, иконки, окна, Dock
+  components/Panel.tsx   ← окно «Информация» (перетаскивание, светофор)
+  components/Bodies.tsx  ← содержимое окон: InfoBody, CVBody, AlertBody
+  components/Thumb.tsx   ← обложки иконок
+  components/ResumeDocument.tsx ← страница резюме (превью и PDF через /?print=resume)
 ```
 
-## Возможности
+## Как это работает
 
-- Boot-анимация → появление MacBook → включение экрана → рабочий стол, иконки, Dock.
-- Окна: открытие/закрытие/сворачивание в Dock/увеличение, перетаскивание, изменение размера, фокус и z-order.
-- Dock с macOS-эффектом увеличения, индикаторы запущенных приложений.
-- Menu bar: меню , File/Edit/View/Window/Help, RU/EN, Wi‑Fi, батарея, Spotlight (⌘/Ctrl + Space или K), Control Center (тема, обои, яркость), календарь по клику на время.
-- Мобильная версия: без рамки MacBook, полноэкранные окна, адаптированный Dock, тап вместо двойного клика.
-- Пасхалка: Terminal (`help`, `whoami`, `career`, `sber`, `route`, `neofetch`, `open <app>`…).
+- Клик по файлу — выделение и окно «Информация»; файлы можно перетаскивать.
+- Окна перетаскиваются за заголовок, закрываются красной кнопкой или Esc.
+- Dock: 4 шуточных диалога, CV (Обо мне / CV / Интересы), Галерея, Instagram, Telegram, Почта, RU/EN, Корзина.
+- На телефоне Dock вертикальный слева, файлы рассыпаны по экрану.

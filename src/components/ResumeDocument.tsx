@@ -1,66 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion } from 'motion/react'
-import { Download, Minus, Plus, Printer } from 'lucide-react'
-import { Toolbar, useWindow } from '../components/Window'
-import { Need } from '../components/Need'
-import { PhotoArt } from '../components/PhotoArt'
+import { Need } from './Need'
+import { PhotoArt } from './PhotoArt'
 import { useLang } from '../lib/i18n'
 import { contacts, education, employers, employerPeriod, portraits, profile, isNeed } from '../data/content'
-import { kindLabel } from './Company'
 
 /** Path of the downloadable CV. Replace the file in /public to update it. */
 export const RESUME_PDF = '/Bogdan_Starogorodtsev_Resume.pdf'
-const PAGE_W = 794
+export const PAGE_W = 794
+export const PAGE_H = 1123
 
-export default function Resume() {
-  const { mobile } = useWindow()
-  const { tt } = useLang()
-  const wrap = useRef<HTMLDivElement>(null)
-  const [fit, setFit] = useState(1)
-  const [zoom, setZoom] = useState(1)
-
-  useEffect(() => {
-    const el = wrap.current
-    if (!el) return
-    const ro = new ResizeObserver(() => setFit(Math.min(1, (el.clientWidth - (mobile ? 24 : 64)) / PAGE_W)))
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [mobile])
-  const scale = fit * zoom
-
-  return (
-    <div className="flex flex-col h-full min-h-0">
-      <Toolbar className="bg-bar border-b border-line">
-        <div className="min-w-0 flex-1">
-          <div className="text-[13px] font-semibold truncate">Bogdan_Starogorodtsev_Resume.pdf</div>
-          <div className="text-[11px] text-ink-3">{tt('Страница 1 из 1', 'Page 1 of 1')}</div>
-        </div>
-        {!mobile && (
-          <div className="flex items-center gap-0.5" data-no-drag>
-            <button className="tb-btn" onClick={() => setZoom((z) => Math.max(0.6, +(z - 0.1).toFixed(2)))} aria-label="Zoom out"><Minus size={15} /></button>
-            <span className="w-10 text-center text-[11.5px] text-ink-2 tabular-nums">{Math.round(scale * 100)}%</span>
-            <button className="tb-btn" onClick={() => setZoom((z) => Math.min(1.6, +(z + 0.1).toFixed(2)))} aria-label="Zoom in"><Plus size={15} /></button>
-            <button className="tb-btn" onClick={() => window.open(RESUME_PDF, '_blank')} aria-label="Print"><Printer size={15} /></button>
-          </div>
-        )}
-        <a href={RESUME_PDF} download className="btn-primary h-8 px-3.5 text-[12px]" data-no-drag><Download size={14} />Download CV</a>
-      </Toolbar>
-      <div ref={wrap} className="scroll flex-1 min-h-0 bg-[#8e8e93]/25 py-6">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 28, delay: 0.1 }}
-          style={{ width: PAGE_W * scale, height: 1123 * scale }}
-          className="mx-auto"
-        >
-          <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }} className="shadow-[0_10px_40px_-10px_rgba(0,0,0,0.4)]">
-            <ResumeDocument />
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  )
-}
+const transferLabel: [string, string] = ['перевод', 'transfer']
 
 /** The A4 page itself — also used to render the PDF (see ?print=resume). */
 export function ResumeDocument() {
@@ -103,7 +51,7 @@ export function ResumeDocument() {
                         {isNeed(r.title.ru) ? <Need /> : <b className="font-semibold">{t(r.title)}</b>}
                         {r.unit && <span className="text-black/60"> · {t(r.unit)}</span>}
                         {r.city && <span className="text-black/60"> · {t(r.city)}</span>}
-                        {r.kind === 'transfer' && <span className="text-black/45"> — {r.note ? t(r.note).toLowerCase() : tt(...kindLabel[r.kind]).toLowerCase()}</span>}
+                        {r.kind === 'transfer' && <span className="text-black/45"> — {r.note ? t(r.note).toLowerCase() : tt(...transferLabel)}</span>}
                       </span>
                     </li>
                   ))}
