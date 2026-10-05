@@ -3,11 +3,12 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useWindows } from '../store/windows'
 import { useLang } from '../lib/i18n'
 import { useIsMobile } from '../lib/hooks'
-import { portraits, profile, contacts } from '../data/content'
-import { alerts, bin, desktopOrder, gallery, itemById, layout, links } from '../data/desktop'
+import { certificates, portraits, publications } from '../data/content'
+import { alerts, bin, desktopOrder, folders, gallery, itemById, layout, links } from '../data/desktop'
 import { Thumb } from './Thumb'
 import { Panel } from './Panel'
-import { AlertBody, CVBody, InfoBody } from './Bodies'
+import { AlertBody, InfoBody } from './Bodies'
+import { CertBody, FolderBody, NotesBody, PressBody, TimelineBody } from './Apps'
 import { AppIcon, type IconKind } from './icons'
 
 /** The whole site: a full-screen desktop with scattered "files", Get-Info windows and a Dock. */
@@ -65,9 +66,10 @@ function Icons({ bounds, mobile }: { bounds: { w: number; h: number }; mobile: b
 
   const activate = (id: string) => {
     setSel(id)
-    const key = `info:${id}`
+    const it = itemById[id]
+    const key = it.open?.key ?? `info:${id}`
     const w = windows.find((x) => x.id === key)
-    if (!w) open('info', { item: id }, key)
+    if (!w) (it.open ? open(it.open.app, it.open.params, key) : open('info', { item: id }, key))
     else if (focusedId === key) close(key)
     else focus(key)
   }
@@ -131,16 +133,48 @@ function Windows({ bounds, mobile }: { bounds: { w: number; h: number }; mobile:
             </Panel>
           )
         }
-        if (w.app === 'cv') {
+        const info = tt('Информация', 'Information about')
+        if (w.app === 'notes') {
           return (
-            <Panel key={w.id} win={w} title={`${tt('Информация', 'Information about')}: ${t(profile.name)}, ${contacts.email}`} width={576} height={460} bounds={bounds} mobile={mobile} focused={focused}>
-              <CVBody />
+            <Panel key={w.id} win={w} title="Notes" width={640} height={470} bounds={bounds} mobile={mobile} focused={focused}>
+              <NotesBody key={w.nonce} initial={w.params.note} mobile={mobile} />
+            </Panel>
+          )
+        }
+        if (w.app === 'folder') {
+          const f = folders[w.params.folder]
+          return (
+            <Panel key={w.id} win={w} title={t(f.title)} width={560} bounds={bounds} mobile={mobile} focused={focused}>
+              <FolderBody id={f.id} />
+            </Panel>
+          )
+        }
+        if (w.app === 'cert') {
+          const c = certificates.find((x) => x.id === w.params.cert)!
+          return (
+            <Panel key={w.id} win={w} title={`Preview — ${t(c.title)}`} width={620} height={640} bounds={bounds} mobile={mobile} focused={focused}>
+              <CertBody id={c.id} />
+            </Panel>
+          )
+        }
+        if (w.app === 'press') {
+          const p = publications.find((x) => x.id === w.params.pub)!
+          return (
+            <Panel key={w.id} win={w} title={`Safari — ${p.source}`} width={600} bounds={bounds} mobile={mobile} focused={focused}>
+              <PressBody id={p.id} />
+            </Panel>
+          )
+        }
+        if (w.app === 'timeline') {
+          return (
+            <Panel key={w.id} win={w} title="Career Timeline" width={600} bounds={bounds} mobile={mobile} focused={focused}>
+              <TimelineBody />
             </Panel>
           )
         }
         const item = w.params.item === 'gallery' ? gallery : w.params.item === 'bin' ? bin : itemById[w.params.item]
         return (
-          <Panel key={w.id} win={w} title={`${tt('Информация', 'Information about')}: ${t(item.title)}`} width={576} height={item.preview?.length || item.resumePreview ? 560 : undefined} bounds={bounds} mobile={mobile} focused={focused}>
+          <Panel key={w.id} win={w} title={`${info}: ${t(item.title)}`} width={576} height={item.preview?.length || item.resumePreview ? 560 : undefined} bounds={bounds} mobile={mobile} focused={focused}>
             <InfoBody item={item} />
           </Panel>
         )
@@ -159,15 +193,16 @@ function Dock({ mobile }: { mobile: boolean }) {
   const entries: DockEntry[] = [
     ...alerts.map((a) => ({ id: a.id, icon: a.icon as IconKind, tip: t(a.app), onClick: () => open('alert', { alert: a.id }, `alert:${a.id}`) })),
     'sep',
-    { id: 'cv', icon: 'notes', tip: 'CV', onClick: () => open('cv', {}, 'cv') },
+    { id: 'notes', icon: 'notes', tip: 'Notes', onClick: () => open('notes', {}, 'notes') },
     { id: 'gallery', icon: 'photos', tip: tt('Галерея', 'Gallery'), onClick: () => open('info', { item: 'gallery' }, 'info:gallery') },
+    { id: 'press', icon: 'safari', tip: tt('Пресса', 'Press'), onClick: () => open('folder', { folder: 'press' }, 'folder:press') },
     'sep',
     { id: 'instagram', icon: 'instagram', tip: 'Instagram', onClick: go(links.instagram) },
     { id: 'telegram', icon: 'telegram', tip: 'Telegram', onClick: go(links.telegram) },
     { id: 'mail', icon: 'mail', tip: tt('Почта', 'Mail'), onClick: go(links.mail) },
     'sep',
     { id: 'lang', icon: 'lang', tip: lang === 'ru' ? 'English' : 'Русский', onClick: () => setLang(lang === 'ru' ? 'en' : 'ru') },
-    { id: 'bin', icon: 'trash', tip: tt('Корзина идей', 'Bin of ideas'), onClick: () => open('info', { item: 'bin' }, 'info:bin') },
+    { id: 'bin', icon: 'trash', tip: tt('Корзина', 'Bin'), onClick: () => open('info', { item: 'bin' }, 'info:bin') },
   ]
 
   return (

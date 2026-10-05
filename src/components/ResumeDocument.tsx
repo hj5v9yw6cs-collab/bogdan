@@ -1,7 +1,7 @@
 import { Need } from './Need'
 import { PhotoArt } from './PhotoArt'
 import { useLang } from '../lib/i18n'
-import { contacts, education, employers, employerPeriod, portraits, profile, isNeed } from '../data/content'
+import { contacts, employers, employerPeriod, nonprofit, portraits, profile, isNeed, story } from '../data/content'
 
 /** Path of the downloadable CV. Replace the file in /public to update it. */
 export const RESUME_PDF = '/Bogdan_Starogorodtsev_Resume.pdf'
@@ -63,14 +63,15 @@ export function ResumeDocument() {
       </section>
 
       <section className="mt-7">
-        <h2 className="text-[10px] font-semibold tracking-[0.18em] text-black/45 mb-3">{tt('ОБРАЗОВАНИЕ', 'EDUCATION')}</h2>
-        <div className="space-y-1.5">
-          {[...education].reverse().map((ed) => (
-            <div key={ed.id} className="grid grid-cols-[120px_1fr] gap-4">
-              <span className="font-mono text-[10px] text-black/50 pt-[2px]">{ed.period ?? '—'}</span>
-              <span><b className="font-semibold">{t(ed.title)}</b> <span className="text-black/60">· {t(ed.place)}</span>{ed.status && <span className="text-black/45"> — {t(ed.status).toLowerCase()}</span>}</span>
-            </div>
-          ))}
+        <h2 className="text-[10px] font-semibold tracking-[0.18em] text-black/45 mb-3">{tt('НЕКОММЕРЧЕСКИЙ ОПЫТ', 'NONPROFIT EXPERIENCE')}</h2>
+        <div className="grid grid-cols-[120px_1fr] gap-4">
+          <span className="font-mono text-[10px] text-black/50 pt-[2px]">{nonprofit.period}</span>
+          <span><b className="font-semibold">{t(nonprofit.role)}</b> <span className="text-black/60">· {t(nonprofit.org)}</span><br /><span className="text-black/60">{t(nonprofit.description)}</span></span>
+        </div>
+        <h2 className="text-[10px] font-semibold tracking-[0.18em] text-black/45 mb-3 mt-6">{tt('ОБРАЗОВАНИЕ', 'EDUCATION')}</h2>
+        <div className="grid grid-cols-[120px_1fr] gap-4">
+          <span className="font-mono text-[10px] text-black/50 pt-[2px]">2026</span>
+          <span>{t(story.resumeLine)}</span>
         </div>
       </section>
 

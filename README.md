@@ -48,5 +48,7 @@ src/
 
 - Клик по файлу — выделение и окно «Информация»; файлы можно перетаскивать.
 - Окна перетаскиваются за заголовок, закрываются красной кнопкой или Esc.
-- Dock: 4 шуточных диалога, CV (Обо мне / CV / Интересы), Галерея, Instagram, Telegram, Почта, RU/EN, Корзина.
+- Dock: 4 шуточных диалога, Notes (Обо мне, My Story, Things I Like, Currently Curious About, Жизнь вне работы, Next Chapter), Галерея, Safari → Пресса, Instagram, Telegram, Почта, RU/EN, Корзина.
+- Папки на столе: Города, Сертификаты (`certificates` в content.ts, файлы в `public/certificates/`), Пресса (`publications`), Проекты (`projects`).
+- Career Timeline показывает основную линию и параллельную — NONPROFIT EXPERIENCE (`nonprofit`).
 - На телефоне Dock вертикальный слева, файлы рассыпаны по экрану.

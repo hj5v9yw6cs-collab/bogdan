@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from 'react'
 
-export type AppId = 'info' | 'alert' | 'cv'
+export type AppId = 'info' | 'alert' | 'notes' | 'folder' | 'cert' | 'press' | 'timeline'
 
 export type WinParams = Record<string, string>
 

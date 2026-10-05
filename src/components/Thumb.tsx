@@ -1,6 +1,6 @@
 import type { Thumb as T } from '../data/desktop'
 import { PhotoArt } from './PhotoArt'
-import { AppIcon } from './icons'
+import { AppIcon, FolderIcon } from './icons'
 
 /** Square "cover" thumbnail used for desktop icons and window headers. */
 export function Thumb({ t, size }: { t: T; size: number }) {
@@ -9,6 +9,17 @@ export function Thumb({ t, size }: { t: T; size: number }) {
   }
   if (t.kind === 'icon') {
     return <div className="shrink-0 [&>svg]:size-full" style={{ width: size, height: size }}><AppIcon kind={t.icon} size={size} /></div>
+  }
+  if (t.kind === 'folder') {
+    return <div className="shrink-0 [&>svg]:size-full" style={{ width: size, height: size }}><FolderIcon glyph={t.glyph} size={size} /></div>
+  }
+  if (t.kind === 'note') {
+    return (
+      <div className="shrink-0 relative rounded-[3px] bg-[#fffdf3] shadow-[0_1px_3px_rgba(0,0,0,0.35)] overflow-hidden" style={{ width: size * 0.82, height: size, marginInline: size * 0.09 }}>
+        <div className="h-[22%] bg-gradient-to-b from-[#ffe066] to-[#f7c600]" />
+        {[0.38, 0.52, 0.66, 0.8].map((y) => <div key={y} className="absolute left-[12%] right-[12%] h-px bg-black/15" style={{ top: `${y * 100}%` }} />)}
+      </div>
+    )
   }
   if (t.kind === 'pdf') {
     return (

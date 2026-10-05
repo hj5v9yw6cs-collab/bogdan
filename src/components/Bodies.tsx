@@ -1,14 +1,14 @@
 import { useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, Check } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import type { Alert, Item } from '../data/desktop'
-import { contacts, education, employerById, employers, childhood, profile, services, NEED, isNeed, type CareerRecord } from '../data/content'
+import { employerById, isNeed, type CareerRecord } from '../data/content'
 import { useLang } from '../lib/i18n'
 import { Thumb } from './Thumb'
 import { Need, TextOrNeed } from './Need'
 import { PhotoArt } from './PhotoArt'
 import { AppIcon } from './icons'
-import { ResumeDocument, PAGE_W, PAGE_H, RESUME_PDF } from './ResumeDocument'
+import { ResumeDocument, PAGE_W, PAGE_H } from './ResumeDocument'
 
 function Disclosure({ label, children, open: initial = true }: { label: string; children: ReactNode; open?: boolean }) {
   const [open, setOpen] = useState(initial)
@@ -131,82 +131,3 @@ export function AlertBody({ a, onClose }: { a: Alert; onClose: () => void }) {
   )
 }
 
-/** Notes-style CV window: sidebar sections + checklist content. */
-export function CVBody() {
-  const { t, tt, lang } = useLang()
-  const [tab, setTab] = useState<'about' | 'cv' | 'interests'>('about')
-  const allRecords = employers.flatMap((e) => e.records.filter((r) => r.date).map((r) => ({ e, r })))
-  const toDate = (d: string) => { const [dd, mm, yy] = d.split('.').map(Number); return +new Date(yy, mm - 1, dd) }
-  allRecords.sort((a, b) => toDate(b.r.date!) - toDate(a.r.date!))
-  const interests = [
-    l2('Финансы — Московский колледж бизнес-технологий, 2026', 'Finance — Moscow College of Business Technologies, 2026'),
-    l2('Карьерное развитие и консультации', 'Career development and consulting'),
-    ...childhood.map((c) => c.title),
-    education.find((e) => e.id === 'journalism')!.title,
-  ]
-  const tabs: [typeof tab, string, string][] = [
-    ['about', tt('Обо мне', 'About me'), String(services.length + 3)],
-    ['cv', 'CV', String(allRecords.length)],
-    ['interests', tt('Интересы', 'Interests'), '∞'],
-  ]
-  return (
-    <div className="flex h-full min-h-[380px]">
-      <aside className="w-[110px] shrink-0 px-[8px] pt-[10px]">
-        {tabs.map(([id, label, n]) => (
-          <button key={id} onClick={() => setTab(id)} className={`w-full flex justify-between items-center px-[8px] py-[6px] border-b border-black/10 text-[12.5px] text-left ${tab === id ? 'bg-black/[0.06] rounded-[4px]' : ''}`}>
-            <span className="text-black">{label}</span><span className="text-black/45 text-[12px]">{n}</span>
-          </button>
-        ))}
-      </aside>
-      <div className="flex-1 min-w-0 bg-white px-[14px] py-[12px] text-[12.5px] leading-[1.3] text-black overflow-y-auto select-text" key={tab + lang}>
-        {tab === 'about' && (
-          <>
-            <p>{t(profile.bio)}</p>
-            <p className="mt-[10px]">{tt('Чем могу помочь…', 'I can help with…')}</p>
-            <Checklist items={services.map((s) => `${t(s.title)} — ${s.price ?? NEED}`)} />
-            <div className="mt-[12px] space-y-[2px]">
-              <ContactLine label="Email" value={contacts.email} href={`mailto:${contacts.email}`} />
-              <ContactLine label="Telegram" value={contacts.telegram && `@${contacts.telegram}`} href={`https://t.me/${contacts.telegram}`} />
-              <ContactLine label="Instagram" value={contacts.instagram && `@${contacts.instagram}`} href={`https://instagram.com/${contacts.instagram}`} />
-            </div>
-          </>
-        )}
-        {tab === 'cv' && (
-          <>
-            <p>{t(profile.currentRole)} · {t(profile.currentCompany)}</p>
-            <a href={RESUME_PDF} download className="mac-btn mt-[8px] inline-flex">{tt('Скачать CV (PDF)', 'Download CV (PDF)')}</a>
-            <Checklist items={allRecords.map(({ e, r }) => `${r.date} — ${t(e.name)}: ${t(r.title)}${r.unit ? ` · ${t(r.unit)}` : ''}`)} />
-          </>
-        )}
-        {tab === 'interests' && (
-          <>
-            <p>{tt('Чем живу помимо работы', 'Beyond work')}</p>
-            <Checklist items={interests.map((x) => t(x))} />
-            <div className="mt-[10px]"><Need label={tt('другие интересы', 'more interests')} /></div>
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
-
-const l2 = (ru: string, en: string) => ({ ru, en })
-
-function Checklist({ items }: { items: string[] }) {
-  return (
-    <ul className="mt-[8px] space-y-[5px]">
-      {items.map((x, i) => (
-        <li key={i} className="flex gap-[7px] items-start">
-          <span className="mt-[1px] size-[13px] shrink-0 rounded-full bg-[#f4b630] grid place-items-center"><Check size={9} strokeWidth={3.4} className="text-white" /></span>
-          <span><TextOrNeed text={x} /></span>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-function ContactLine({ label, value, href }: { label: string; value: string; href: string }) {
-  return (
-    <div className="flex gap-[8px]"><span className="w-[70px] text-black/50">{label}</span>{value ? <a className="text-[#0a5cd6] hover:underline" href={href} target="_blank" rel="noreferrer">{value}</a> : <Need />}</div>
-  )
-}

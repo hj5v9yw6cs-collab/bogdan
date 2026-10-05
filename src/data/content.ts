@@ -41,8 +41,6 @@ export const profile = {
     'Born in Zelenodolsk. Yoshkar-Ola, Kazan, Samara, Moscow — five cities. At Sberbank I grew from mobile sales manager to working with key and corporate clients. Then T-Bank, mid and large business, and business development at Domilend.',
   ),
   /** Развёрнутое «о себе» — своими словами. */
-  longBio: null as L | null, // NEED
-  values: [] as L[], // NEED: 3–5 личных принципов
   status: l('строю следующую главу…', 'building the next chapter...'),
 }
 
@@ -234,29 +232,143 @@ export const stages: Stage[] = [
 
 /** Города — без годов (годы проживания: NEED). */
 export const cities: { id: string; name: L; note: L | null; years: string | null }[] = [
-  { id: 'zel', name: l('Зеленодольск', 'Zelenodolsk'), years: null, note: l('Родной город. Школа №4, школа журналистики, гимнастика, тяжёлая атлетика и музыкальная школа.', 'Hometown. School No. 4, a journalism school, gymnastics, weightlifting and music school.') },
-  { id: 'yo', name: l('Йошкар-Ола', 'Yoshkar-Ola'), years: null, note: l('Переезд после школы. Медицинский колледж, направление «Фельдшер».', 'Moved here after school. Medical college, paramedic program.') },
+  { id: 'zel', name: l('Зеленодольск', 'Zelenodolsk'), years: null, note: l('Родной город. Школа и школа журналистики.', 'Hometown. School and a school of journalism.') },
+  { id: 'yo', name: l('Йошкар-Ола', 'Yoshkar-Ola'), years: null, note: l('После школы — учёба в медицинском направлении. Здесь стало понятно, что медицина — не моё.', 'After school — studying medicine. This is where it became clear medicine was not my path.') },
   { id: 'kzn', name: l('Казань', 'Kazan'), years: null, note: null },
   { id: 'sam', name: l('Самара', 'Samara'), years: null, note: l('Сбербанк: корпоративные клиенты АПК (с 14.10.2024).', 'Sberbank: corporate agribusiness clients (from 14.10.2024).') },
-  { id: 'msk', name: l('Москва', 'Moscow'), years: null, note: l('Т-Банк, Домиленд и Московский колледж бизнес-технологий («Финансы», 2026).', 'T-Bank, Domilend and Moscow College of Business Technologies (Finance, 2026).') },
+  { id: 'msk', name: l('Москва', 'Moscow'), years: null, note: l('Т-Банк и возвращение к образованию — направление «Финансы».', 'T-Bank and a return to education — Finance.') },
 ]
 
-/* ───────────────────────── Образование и биография ───────────────────────── */
+/* ───────────────────────── My Story (образование как часть истории) ─────────────────────────
+ * Названия учебных заведений на сайте не показываются — только история.
+ */
+export const story = {
+  title: l('My Story', 'My Story'),
+  path: l(
+    'Школа → журналистика → медицина → первая работа → самостоятельная жизнь → карьера → финансы',
+    'School → journalism → medicine → first job → living on my own → career → finance',
+  ),
+  paragraphs: [
+    l('Я окончил школу. Ещё в Зеленодольске учился в школе журналистики.', 'I finished school. While still in Zelenodolsk, I studied at a school of journalism.'),
+    l('После школы передо мной встал выбор дальнейшего пути. Я поступал в медицинские учебные заведения и в Москве, и в Йошкар-Оле — и в итоге остановился на Йошкар-Оле, начав учиться в медицинском направлении.', 'After school I had to choose what came next. I applied to medical schools in both Moscow and Yoshkar-Ola, and in the end chose Yoshkar-Ola and started studying medicine.'),
+    l('Позже я понял, что медицина мне не откликается. Я забрал документы, начал работать и стал самостоятельно строить свой профессиональный путь.', 'Later I realised medicine did not resonate with me. I withdrew, started working and began building my professional path on my own.'),
+    l('Спустя время я снова вернулся к образованию — уже в Москве, на направлении «Финансы».', 'Some time later I came back to education — this time in Moscow, studying Finance.'),
+    l('Я не всегда шёл по прямой, но шаг за шагом находил своё направление.', 'My path was not always a straight line, but step by step I found my direction.'),
+  ],
+  /** Для резюме: только направление, без названий учебных заведений. */
+  resumeLine: l('Направление «Финансы», Москва — поступление в 2026 году', 'Finance, Moscow — enrolled in 2026'),
+}
 
-export type EduItem = { id: string; title: L; place: L; period: string | null; status: L | null; note?: L }
+/* ───────────────────────── Notes: интересы и жизнь вне работы ───────────────────────── */
 
-export const education: EduItem[] = [
-  { id: 'school', title: l('МБОУ СОШ №4', 'Secondary School No. 4'), place: l('Зеленодольский муниципальный район, Республика Татарстан', 'Zelenodolsk district, Republic of Tatarstan'), period: null, status: null },
-  { id: 'journalism', title: l('Школа журналистики', 'School of Journalism'), place: l('Зеленодольск', 'Zelenodolsk'), period: null, status: null },
-  { id: 'medical', title: l('Йошкар-Олинский медицинский колледж', 'Yoshkar-Ola Medical College'), place: l('Йошкар-Ола · направление «Фельдшер»', 'Yoshkar-Ola · Paramedic program'), period: null, status: l('Обучение не завершено', 'Not completed') },
-  { id: 'mkbt', title: l('Московский колледж бизнес-технологий', 'Moscow College of Business Technologies'), place: l('Москва · направление «Финансы»', 'Moscow · Finance program'), period: '2026', status: l('Поступление в 2026 году', 'Enrolled in 2026') },
+export const motto = l('Мне всегда мало.', 'I always want more.')
+
+export const life = {
+  childhood: l(
+    'В детстве занимался в музыкальной школе, ходил на гимнастику, позже — тяжёлой атлетикой. Всё это было на любительском уровне, и со временем я это оставил.',
+    'As a kid I went to music school and gymnastics, and later did weightlifting. All of it was at an amateur level, and over time I let it go.',
+  ),
+  now: [
+    l('Сейчас у меня гораздо больше разных интересов.', 'Today I have many more interests.'),
+    l('Люблю выставки и музеи — особенно фотовыставки. Мне интересны архитектура и психология.', 'I love exhibitions and museums — especially photo exhibitions. I am into architecture and psychology.'),
+    l('Смотрю фильмы в оригинале и потом обсуждаю их с друзьями. Читаю и художественную литературу, и книги по психологии и финансам.', 'I watch films in the original language and then discuss them with friends. I read fiction as well as books on psychology and finance.'),
+    l('Смотрю влоги людей, которые путешествуют, — и сам хочу путешествовать чаще и больше.', 'I watch travel vlogs — and want to travel more and more often myself.'),
+    l('Регулярно хожу в зал. Одно время играл в большой теннис. Люблю бассейн.', 'I go to the gym regularly. For a while I played tennis. I love swimming pools.'),
+    l('Мне интересна одежда — но не столько сама одежда, сколько её происхождение: история брендов, биографии основателей, развитие компаний.', 'I am into clothing — less the clothes themselves than where they come from: brand history, founders’ biographies and how companies grow.'),
+    l('Слежу за изменениями на рынке технологий: новые продукты, компании, идеи — и то, как меняется мир.', 'I follow the tech market: new products, companies, ideas — and how the world is changing.'),
+  ],
+  curiosity: [
+    l('Я очень любознательный человек. Мне нравится узнавать что-то новое.', 'I am a very curious person. I love learning new things.'),
+    l('Не люблю стоять на месте.', 'I don’t like standing still.'),
+    l('Я голоден до новой информации, новых впечатлений и новых знакомств.', 'I am hungry for new information, new experiences and new people.'),
+  ],
+  thingsILike: ['Museums', 'Exhibitions', 'Photography', 'Cinema', 'Books', 'Travel', 'Architecture', 'Technology', 'Fashion & Brand History', 'Psychology', 'Finance'],
+  curiousAbout: ['Architecture', 'Psychology', 'Technology', 'Cinema', 'Fashion', 'Brand History', 'Finance', 'Travel'],
+  nextChapter: [
+    l('Возвращение к образованию: направление «Финансы», Москва.', 'Back to education: Finance, Moscow.'),
+    l('Карьерные консультации — делиться опытом с другими.', 'Career consulting — sharing experience with others.'),
+  ],
+}
+
+/* ───────────────────────── Nonprofit — параллельная линия ───────────────────────── */
+
+export const nonprofit = {
+  id: 'foodbank',
+  badge: l('NONPROFIT EXPERIENCE', 'NONPROFIT EXPERIENCE'),
+  org: l('Благотворительный фонд «Банк еды „Русь“»', 'Food Bank “Rus” charity foundation'),
+  short: l('Банк еды «Русь»', 'Food Bank “Rus”'),
+  role: l('Фандрайзер', 'Fundraiser'),
+  period: '2025 — 2026',
+  description: l(
+    'В 2025–2026 годах занимался фандрайзингом в благотворительном фонде «Банк еды „Русь“», помогая привлекать денежные средства на поддержку людей, нуждающихся в продовольственной помощи.',
+    'In 2025–2026 I worked as a fundraiser for the Food Bank “Rus” charity foundation, helping raise money to support people in need of food assistance.',
+  ),
+  note: l('Отдельный опыт, параллельный основной карьерной линии.', 'A separate experience, running in parallel to the main career line.'),
+  areas: [
+    l('Фандрайзинг', 'Fundraising'),
+    l('Привлечение пожертвований', 'Raising donations'),
+    l('Коммуникация с людьми', 'Communicating with people'),
+    l('Презентация идеи', 'Presenting the idea'),
+    l('Социальная ответственность', 'Social responsibility'),
+  ],
+  // NEED: точные даты, город, результаты — только если Богдан их предоставит
+  exactDates: null as string | null,
+}
+
+/* ───────────────────────── Certificates (Сбер) ─────────────────────────
+ * Каждый сертификат — один объект. Файлы кладите в /public/certificates/.
+ *   pages — картинки страниц для просмотра (jpg/png/webp), по порядку;
+ *   file  — оригинал для скачивания (pdf или изображение).
+ * Если pages пустой, а file — PDF, он откроется во встроенном просмотрщике браузера.
+ * Всё, чего нет на документе, — NEED.
+ */
+export type Certificate = {
+  id: string
+  title: L
+  organization: L
+  date: string | null
+  description: L | null
+  file: string
+  pages: string[]
+}
+
+export const certificates: Certificate[] = [
+  // NEED: сканы сертификатов Сбера — добавить после загрузки, данные взять из самих документов
 ]
 
-export const childhood: { id: string; title: L; note: L | null }[] = [
-  { id: 'gym', title: l('Гимнастика', 'Gymnastics'), note: null },
-  { id: 'lift', title: l('Тяжёлая атлетика', 'Weightlifting'), note: null },
-  { id: 'guitar', title: l('Музыкальная школа, класс гитары', 'Music school, guitar'), note: l('Обучение не завершено', 'Not completed') },
+/* ───────────────────────── Press / Publications ───────────────────────── */
+
+export type Publication = {
+  id: string
+  source: string
+  title: L
+  date: string // ГГГГ-ММ-ДД
+  url: string
+  description: L
+  image?: string
+}
+
+export const publications: Publication[] = [
+  {
+    id: 'blueprint-41633',
+    source: 'The Blueprint',
+    title: l(
+      'Богдан Старогородцев назначен ведущим менеджером по работе со средним и крупным бизнесом в Т-Банк',
+      'Богдан Старогородцев назначен ведущим менеджером по работе со средним и крупным бизнесом в Т-Банк',
+    ),
+    date: '2026-09-02',
+    url: 'https://theblueprint.ru/career/41633',
+    description: l(
+      'Публикация о назначении на позицию ведущего менеджера по работе со средним и крупным бизнесом в Т-Банк.',
+      'A piece on the appointment as Lead Manager, Mid & Large Business at T-Bank.',
+    ),
+    image: '/press/blueprint-41633.webp',
+  },
 ]
+
+/* ───────────────────────── Projects ───────────────────────── */
+// NEED: собственные проекты Богдана. Пока в папке только Career Consulting.
+export const projects: { id: string; title: L; description: L | null; url?: string }[] = []
 
 /* ───────────────────────── Фото ─────────────────────────
  * Чтобы заменить placeholder: положите файл в /public/photos/ и укажите src: '/photos/kazan.jpg'.
@@ -296,8 +408,6 @@ export const photos: Photo[] = [
   { id: 'w-sber', album: 'work', title: l('Сбербанк', 'Sberbank'), caption: null, year: null, palette: ['#0b3d24', '#21a038', '#d9f99d'] },
   { id: 'w-tbank', album: 'work', title: l('Т-Банк', 'T-Bank'), caption: null, year: null, palette: ['#1c1c1e', '#3a3a3c', '#ffdd2d'] },
   { id: 'w-domilend', album: 'work', title: l('Домиленд', 'Domilend'), caption: null, year: null, palette: ['#200122', '#6f0000', '#fc3f1d'] },
-  { id: 'l-sport', album: 'life', title: l('Спорт', 'Sport'), caption: l('Гимнастика и тяжёлая атлетика', 'Gymnastics and weightlifting'), year: null, palette: ['#0f0c29', '#302b63', '#24c6dc'] },
-  { id: 'l-music', album: 'life', title: l('Гитара', 'Guitar'), caption: l('Музыкальная школа', 'Music school'), year: null, palette: ['#3a1c71', '#d76d77', '#ffaf7b'] },
 ]
 
 /* ───────────────────────── Консультации ─────────────────────────

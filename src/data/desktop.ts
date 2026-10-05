@@ -6,15 +6,18 @@
  */
 import {
   l, type L, type EmployerId,
-  bookingUrl, childhood, cities, contacts, education, employerById, photos, portraits, profile, segments, services, stages,
+  bookingUrl, certificates, cities, contacts, employerById, nonprofit, photos, portraits, profile, projects, publications, segments, services, stages, story,
 } from './content'
-import type { IconKind } from '../components/icons'
+import type { FolderGlyph, IconKind } from '../components/icons'
+import type { AppId } from '../store/windows'
 
 export type Thumb =
   | { kind: 'photo'; src?: string; palette: [string, string, string]; pos?: string }
   | { kind: 'cover'; bg: string; ink: string; big: string; small?: string }
   | { kind: 'pdf' }
   | { kind: 'icon'; icon: IconKind }
+  | { kind: 'folder'; glyph?: FolderGlyph }
+  | { kind: 'note' }
 
 export type Row = { k: L; v: L | string | null }
 
@@ -34,7 +37,12 @@ export type Item = {
   preview?: { src?: string; palette: [string, string, string]; caption?: L; pos?: string }[]
   resumePreview?: boolean
   actions?: { label: L; href: string; download?: boolean }[]
+  /** If set, clicking the icon opens this window instead of the Info window. */
+  open?: { app: AppId; params: Record<string, string>; key: string }
 }
+
+/** Folder contents: item ids shown in a Finder-like grid. */
+export type FolderDef = { id: string; title: L; glyph: FolderGlyph; children: string[]; empty?: L }
 
 
 /* ───────── Карьера: один «файл» на каждый этап ───────── */
@@ -155,40 +163,99 @@ const otherItems: Item[] = [
     rows: services.map((s) => ({ k: s.title, v: s.price })),
     actions: bookingUrl ? [{ label: l('Book a consultation', 'Book a consultation'), href: bookingUrl }] : [],
   },
+]
+
+/* ───────── Nonprofit, архив, заметки ───────── */
+
+const archiveItems: Item[] = [
   {
-    id: 'education',
-    label: l('Образование', 'Education'),
-    thumb: { kind: 'cover', bg: 'linear-gradient(140deg,#14213d,#3a5a99)', ink: '#ffffff', big: 'EDU', small: '2026' },
-    title: l('Образование', 'Education'),
-    subtitle: l('Школа, колледжи и следующая глава — финансы', 'School, colleges and the next chapter — finance'),
-    text: [...education].reverse().map((e) => l(
-      `${e.title.ru} — ${e.place.ru}${e.status ? `. ${e.status.ru}` : ''}.`,
-      `${e.title.en} — ${e.place.en}${e.status ? `. ${e.status.en}` : ''}.`,
-    )),
-    type: l('Биография > Образование', 'Bio > Education'),
-    rows: [...education].reverse().map((e) => ({ k: e.title, v: e.period })),
+    id: 'nonprofit',
+    label: nonprofit.short,
+    thumb: { kind: 'cover', bg: 'linear-gradient(150deg,#fff3d6,#f2b544 55%,#c8641c)', ink: '#3a1d06', big: 'FOOD\nBANK', small: '2025 — 2026' },
+    title: nonprofit.role,
+    subtitle: nonprofit.org,
+    text: [nonprofit.description, nonprofit.note],
+    type: l(`${nonprofit.badge.ru} > Фандрайзинг`, `${nonprofit.badge.en} > Fundraising`),
+    rows: [
+      { k: l('Период', 'Period'), v: nonprofit.period },
+      { k: l('Роль', 'Role'), v: nonprofit.role },
+      { k: l('Направления', 'Focus'), v: l(nonprofit.areas.map((a) => a.ru).join(', '), nonprofit.areas.map((a) => a.en).join(', ')) },
+    ],
   },
   {
-    id: 'sport',
-    label: l('Спорт', 'Sport'),
-    thumb: { kind: 'cover', bg: 'linear-gradient(140deg,#0f0c29,#302b63 60%,#24c6dc)', ink: '#ffffff', big: 'GYM', small: 'ЗЕЛЕНОДОЛЬСК' },
-    title: l('Спорт', 'Sport'),
-    subtitle: l('Детство · Зеленодольск', 'Childhood · Zelenodolsk'),
-    text: [l(`${childhood[0].title.ru}, затем ${childhood[1].title.ru.toLowerCase()}.`, `${childhood[0].title.en}, then ${childhood[1].title.en.toLowerCase()}.`)],
-    type: l('Биография > Детство', 'Bio > Childhood'),
+    id: 'timeline',
+    label: l('Career Timeline', 'Career Timeline'),
+    thumb: { kind: 'icon', icon: 'timeline' },
+    title: l('Career Timeline', 'Career Timeline'), subtitle: profile.name, text: [], type: l('Карьера', 'Career'),
+    open: { app: 'timeline', params: {}, key: 'timeline' },
   },
   {
-    id: 'guitar',
-    label: l('Гитара', 'Guitar'),
-    thumb: { kind: 'cover', bg: 'linear-gradient(140deg,#3a1c71,#d76d77 60%,#ffaf7b)', ink: '#ffffff', big: 'GUI\nTAR', small: '♪' },
-    title: l('Гитара', 'Guitar'),
-    subtitle: l('Детство · Зеленодольск', 'Childhood · Zelenodolsk'),
-    text: [l(`${childhood[2].title.ru}. ${childhood[2].note!.ru}.`, `${childhood[2].title.en}. ${childhood[2].note!.en}.`)],
-    type: l('Биография > Детство', 'Bio > Childhood'),
+    id: 'my-story',
+    label: l('My Story', 'My Story'),
+    thumb: { kind: 'note' },
+    title: story.title, subtitle: profile.name, text: [], type: l('Notes', 'Notes'),
+    open: { app: 'notes', params: { note: 'story' }, key: 'notes' },
+  },
+  {
+    id: 'contact',
+    label: l('Контакты', 'Contact'),
+    thumb: { kind: 'icon', icon: 'contacts' },
+    title: profile.name,
+    subtitle: l('Карьера · бизнес · развитие', 'Career / Business Development'),
+    text: [l('Самый быстрый способ связаться — Telegram.', 'The fastest way to reach me is Telegram.')],
+    type: l('Контакты', 'Contact'),
+    rows: [
+      { k: l('Email', 'Email'), v: contacts.email || null },
+      { k: l('Telegram', 'Telegram'), v: contacts.telegram ? `@${contacts.telegram}` : null },
+      { k: l('Instagram', 'Instagram'), v: contacts.instagram ? `@${contacts.instagram}` : null },
+    ],
+    actions: [
+      ...(contacts.telegram ? [{ label: l('Написать в Telegram', 'Message on Telegram'), href: `https://t.me/${contacts.telegram}` }] : []),
+      ...(contacts.email ? [{ label: l('Написать на почту', 'Send an email'), href: `mailto:${contacts.email}` }] : []),
+    ],
   },
 ]
 
-export const items: Item[] = [...stageItems, ...cityItems, ...photoItems, ...otherItems]
+const certItems: Item[] = certificates.map((c) => ({
+  id: `cert-${c.id}`,
+  label: c.title,
+  thumb: c.pages[0] ? { kind: 'photo', src: c.pages[0], palette: ['#f4f4f4', '#d9d9d9', '#9a9a9a'] } : { kind: 'pdf' },
+  title: c.title, subtitle: c.organization, text: [c.description], type: l('Сертификаты', 'Certificates'),
+  open: { app: 'cert', params: { cert: c.id }, key: `cert:${c.id}` },
+}))
+
+const pressItems: Item[] = publications.map((p) => ({
+  id: `press-${p.id}`,
+  label: l(`${p.source} — ${fmtDate(p.date)}`, `${p.source} — ${fmtDate(p.date)}`),
+  thumb: p.image ? { kind: 'photo', src: p.image, palette: ['#e9e9f2', '#3346a3', '#111'], pos: '78% 50%' } : { kind: 'cover', bg: '#111', ink: '#fff', big: p.source.slice(0, 3).toUpperCase() },
+  title: p.title, subtitle: l(p.source, p.source), text: [p.description], type: l('Пресса', 'Press'),
+  open: { app: 'press', params: { pub: p.id }, key: `press:${p.id}` },
+}))
+
+const projectItems: Item[] = projects.map((p) => ({
+  id: `project-${p.id}`, label: p.title, thumb: { kind: 'cover', bg: '#222', ink: '#fff', big: p.title.en.slice(0, 4).toUpperCase() },
+  title: p.title, subtitle: profile.name, text: [p.description], type: l('Проекты', 'Projects'),
+  actions: p.url ? [{ label: l('Открыть', 'Open'), href: p.url }] : [],
+}))
+
+export function fmtDate(iso: string) {
+  const [y, m, d] = iso.split('-')
+  return `${d}.${m}.${y}`
+}
+
+export const folders: Record<string, FolderDef> = {
+  cities: { id: 'cities', title: l('Города', 'Cities'), glyph: 'photos', children: cityItems.map((i) => i.id) },
+  certificates: { id: 'certificates', title: l('Сертификаты', 'Certificates'), glyph: 'education', children: certItems.map((i) => i.id), empty: l('Здесь появятся сертификаты и документы об обучении в Сбере.', 'Sber certificates and training documents will appear here.') },
+  press: { id: 'press', title: l('Пресса', 'Press'), glyph: 'contact', children: pressItems.map((i) => i.id) },
+  projects: { id: 'projects', title: l('Проекты', 'Projects'), glyph: 'projects', children: ['consulting', ...projectItems.map((i) => i.id)], empty: l('Другие проекты', 'More projects') },
+}
+
+const folderItems: Item[] = Object.values(folders).map((f) => ({
+  id: `f-${f.id}`, label: f.title, thumb: { kind: 'folder', glyph: f.glyph }, title: f.title, subtitle: profile.name, text: [], type: l('Папка', 'Folder'),
+  open: { app: 'folder', params: { folder: f.id }, key: `folder:${f.id}` },
+}))
+
+export const items: Item[] = [...stageItems, ...cityItems, ...photoItems, ...otherItems, ...archiveItems, ...certItems, ...pressItems, ...projectItems, ...folderItems]
 export const itemById = Object.fromEntries(items.map((i) => [i.id, i])) as Record<string, Item>
 
 /* ───────── Окна из Dock ───────── */
@@ -208,10 +275,9 @@ export const bin: Item = {
   id: 'bin',
   label: l('Корзина', 'Bin'),
   thumb: { kind: 'icon', icon: 'trash' },
-  title: l('Незавершённые главы', 'Unfinished chapters'),
-  subtitle: l('Тоже часть пути', 'Also part of the path'),
-  text: education.filter((e) => e.status && /не завершено/i.test(e.status.ru)).map((e) => l(`${e.title.ru} — ${e.place.ru}.`, `${e.title.en} — ${e.place.en}.`))
-    .concat(childhood.filter((c) => c.note).map((c) => l(`${c.title.ru}.`, `${c.title.en}.`))),
+  title: l('Корзина', 'Bin'),
+  subtitle: l('Пусто', 'Empty'),
+  text: [l('Корзина пуста.', 'The bin is empty.')],
   type: l('Корзина', 'Bin'),
 }
 
@@ -240,9 +306,9 @@ const desktopSlots: [number, number][] = [
 ]
 
 const order = [
-  'early-cc', 'city-zel', 'sber-sales', 'city-yo', 'early-lp', 'sport', 'sber-premium', 'sber-corp', 'resume', 'p-studio',
-  'sber-key', 'sber-apk', 'city-kzn', 'guitar', 'education', 'city-sam', 'p-boutique', 'city-msk', 'tbank-mid', 'domilend',
-  'consulting', 'tbank-midlarge', 'p-tuxedo',
+  'early-cc', 'f-cities', 'sber-sales', 'my-story', 'early-lp', 'p-boutique', 'sber-premium', 'sber-corp', 'resume', 'p-studio',
+  'sber-key', 'sber-apk', 'tbank-mid', 'nonprofit', 'f-certificates', 'f-press', 'contact', 'p-tuxedo', 'timeline', 'domilend',
+  'consulting', 'tbank-midlarge', 'f-projects',
 ]
 
 // Mobile: a loose three-column scatter to the right of the vertical Dock.
