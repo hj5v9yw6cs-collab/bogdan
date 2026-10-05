@@ -37,11 +37,10 @@ export const profile = {
   currentCompany: l('Т-Банк · Департамент Т-Бизнес', 'T-Bank · T-Business Department'),
   shortRole: l('Развитие бизнеса · Средний и крупный бизнес', 'Business Development · Mid & Large Business'),
   bio: l(
-    'Родился в Зеленодольске. Йошкар-Ола, Казань, Самара, Москва — пять городов. В Сбербанке прошёл путь от мобильного менеджера по продажам до работы с ключевыми и корпоративными клиентами. Дальше — Т-Банк, средний и крупный бизнес, и развитие бизнеса в Домиленде.',
-    'Born in Zelenodolsk. Yoshkar-Ola, Kazan, Samara, Moscow — five cities. At Sberbank I grew from mobile sales manager to working with key and corporate clients. Then T-Bank, mid and large business, and business development at Domilend.',
+    'Родился в Зеленодольске. Йошкар-Ола, Казань, Самара, Москва — пять городов, которые стали частью моего пути. В Сбербанке прошёл путь от клиентского менеджера до главного менеджера по работе со средним и крупным бизнесом. Затем — Т-Банк, средний и крупный бизнес, и развитие бизнеса в Домиленде / Яндексе.',
+    'Born in Zelenodolsk. Yoshkar-Ola, Kazan, Samara, Moscow — five cities that became part of my path. At Sberbank I went from client manager to chief manager for mid & large business. Then T-Bank, mid & large business, and business development at Domilend / Yandex.',
   ),
   /** Развёрнутое «о себе» — своими словами. */
-  status: l('строю следующую главу…', 'building the next chapter...'),
 }
 
 /* ───────────────────────── Контакты ───────────────────────── */
@@ -61,10 +60,9 @@ export const contacts = {
  * segment — к какому этапу роста относится запись (см. segments).
  */
 
-export type SegmentId = 'early' | 'sales' | 'premium' | 'corporate' | 'key' | 'midlarge' | 'bizdev'
+export type SegmentId = 'sales' | 'premium' | 'corporate' | 'key' | 'midlarge' | 'bizdev'
 
 export const segments: { id: SegmentId; title: L; short: L }[] = [
-  { id: 'early', title: l('Первые работы', 'First jobs'), short: l('Старт', 'Start') },
   { id: 'sales', title: l('Клиентский сервис и продажи', 'Client service & sales'), short: l('Продажи', 'Sales') },
   { id: 'premium', title: l('Премиальный сегмент', 'Premium segment'), short: l('Премиум', 'Premium') },
   { id: 'corporate', title: l('Корпоративные клиенты', 'Corporate clients'), short: l('Корпоративный', 'Corporate') },
@@ -85,7 +83,7 @@ export type CareerRecord = {
   note?: L
 }
 
-export type EmployerId = 'early' | 'sber' | 'tbank' | 'domilend'
+export type EmployerId = 'sber' | 'tbank' | 'domilend'
 
 export type Employer = {
   id: EmployerId
@@ -111,11 +109,11 @@ const sber: Employer = {
   color: '#21A038',
   gradient: 'linear-gradient(135deg,#0b3d24 0%,#16803a 50%,#21A038 75%,#9be15d 120%)',
   summary: l(
-    'Главная школа карьеры. Девять кадровых записей и восемь должностей: от мобильного менеджера по продажам — через премиальный сегмент и корпоративных клиентов — к главному менеджеру по работе с ключевыми клиентами и корпоративным клиентам АПК в Самаре.',
-    'The main school of my career. Nine HR records and eight positions: from mobile sales manager — through the premium segment and corporate clients — to chief key-client manager and corporate agribusiness clients in Samara.',
+    'Главная школа карьеры. Девять кадровых записей: от клиентского менеджера — через премиальный сегмент, корпоративных и ключевых клиентов — к работе со средним и крупным бизнесом.',
+    'The main school of my career. Nine HR records: from client manager — through the premium segment, corporate and key clients — to mid & large business.',
   ),
   records: [
-    { date: '16.04.2021', kind: 'hire', segment: 'sales', city: null, title: l('Мобильный менеджер по продажам', 'Mobile Sales Manager') },
+    { date: '16.04.2021', kind: 'hire', segment: 'sales', city: null, title: l('Клиентский менеджер', 'Client Manager') },
     { date: '24.09.2021', kind: 'promotion', segment: 'sales', city: null, title: l('Старший клиентский менеджер', 'Senior Client Manager') },
     { date: '04.03.2022', kind: 'promotion', segment: 'premium', city: null, title: l('Клиентский менеджер Премьер', 'Client Manager, Premier') },
     { date: '01.10.2022', kind: 'promotion', segment: 'premium', city: null, title: l('Персональный менеджер Премьер', 'Personal Manager, Premier') },
@@ -174,33 +172,8 @@ const domilend: Employer = {
   lessons: null,
 }
 
-const early: Employer = {
-  id: 'early',
-  index: '04',
-  folder: '04 — OTHER EXPERIENCE',
-  name: l('Ранний опыт', 'Early experience'),
-  color: '#8E8E93',
-  gradient: 'linear-gradient(135deg,#1c1c1e 0%,#3a3a3c 60%,#8e8e93 120%)',
-  summary: l(
-    'Первые работы до Сбербанка (2020–2021): контакт-центр ООО «СИТИСТАФФ» и предотвращение потерь в ООО «ЛАБИРИНТ-ВОЛГА». С 16.04.2021 — Сбербанк.',
-    'First jobs before Sberbank (2020–2021): a contact center at CITYSTAFF LLC and loss prevention at LABIRINT-VOLGA LLC. From 16.04.2021 — Sberbank.',
-  ),
-  // По выписке СФР. Города — NEED.
-  records: [
-    { date: '10.06.2020', kind: 'hire', segment: 'early', city: null, title: l('Оператор-специалист контакт-центра', 'Contact Center Specialist'), unit: l('ООО «СИТИСТАФФ»', 'CITYSTAFF LLC') },
-    { date: '06.11.2020', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
-    { date: '16.11.2020', kind: 'hire', segment: 'early', city: null, title: l('Оператор-специалист контакт-центра', 'Contact Center Specialist'), unit: l('ООО «СИТИСТАФФ»', 'CITYSTAFF LLC'), note: l('Повторный приём', 'Rehired') },
-    { date: '15.12.2020', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
-    { date: '22.01.2021', kind: 'hire', segment: 'early', city: null, title: l('Специалист по предотвращению потерь', 'Loss Prevention Specialist'), unit: l('ООО «ЛАБИРИНТ-ВОЛГА»', 'LABIRINT-VOLGA LLC') },
-    { date: '31.03.2021', kind: 'end', segment: 'early', title: l('Завершение работы', 'End of employment') },
-  ],
-  responsibilities: [],
-  achievements: [],
-  lessons: null,
-}
-
 /** Порядок папок в Finder → Career. */
-export const employers: Employer[] = [sber, tbank, domilend, early]
+export const employers: Employer[] = [sber, tbank, domilend]
 export const employerById = Object.fromEntries(employers.map((e) => [e.id, e])) as Record<EmployerId, Employer>
 
 /* ───────── Карьерная история (Career Timeline) ─────────
@@ -218,13 +191,11 @@ export type Stage = {
 }
 
 export const stages: Stage[] = [
-  { id: 'early-cc', year: '2020', employer: 'early', label: l('Контакт-центр · СИТИСТАФФ', 'Contact center · CITYSTAFF'), segment: 'early', records: [0, 1, 2, 3] },
-  { id: 'early-lp', year: '2021', employer: 'early', label: l('Предотвращение потерь · ЛАБИРИНТ-ВОЛГА', 'Loss prevention · LABIRINT-VOLGA'), segment: 'early', records: [4, 5] },
-  { id: 'sber-sales', year: '2021', employer: 'sber', label: l('Мобильные продажи → клиентский менеджер', 'Mobile Sales → Client Manager'), segment: 'sales', records: [0, 1] },
+  { id: 'sber-sales', year: '2021', employer: 'sber', label: l('Клиентский менеджер', 'Client Manager'), segment: 'sales', records: [0, 1] },
   { id: 'sber-premium', year: '2022', employer: 'sber', label: l('Премьер · премиальный сегмент', 'Premier · Premium segment'), segment: 'premium', records: [2, 3, 4] },
-  { id: 'sber-corp', year: '2022', employer: 'sber', label: l('Корпоративные клиенты', 'Corporate clients'), segment: 'corporate', records: [5] },
-  { id: 'sber-key', year: '2023', employer: 'sber', label: l('Ключевые клиенты', 'Key clients'), segment: 'key', records: [6, 7] },
-  { id: 'sber-apk', year: '2024', employer: 'sber', label: l('Корпоративные клиенты АПК · Самара', 'Corporate agribusiness · Samara'), segment: 'corporate', records: [8, 9] },
+  { id: 'sber-corp', year: '2022', employer: 'sber', label: l('Корпоративные клиенты · микро- и малый бизнес', 'Corporate clients · micro & small business'), segment: 'corporate', records: [5] },
+  { id: 'sber-key', year: '2023', employer: 'sber', label: l('Ключевые клиенты · малый и средний бизнес', 'Key clients · small & mid business'), segment: 'key', records: [6, 7] },
+  { id: 'sber-apk', year: '2024', employer: 'sber', label: l('Корпоративные клиенты · крупный и средний бизнес', 'Corporate clients · large & mid business'), segment: 'corporate', records: [8, 9] },
   { id: 'tbank-mid', year: '2025', employer: 'tbank', label: l('Средний бизнес', 'Middle business'), segment: 'midlarge', records: [0, 1] },
   { id: 'domilend', year: '2026', employer: 'domilend', label: l('Развитие бизнеса', 'Business development'), segment: 'bizdev', records: [0, 1, 2] },
   { id: 'tbank-midlarge', year: '2026 —', employer: 'tbank', label: l('Средний и крупный бизнес', 'Mid & large business'), segment: 'midlarge', records: [2], current: true },
@@ -243,20 +214,19 @@ export const cities: { id: string; name: L; note: L | null; years: string | null
  * Названия учебных заведений на сайте не показываются — только история.
  */
 export const story = {
-  title: l('My Story', 'My Story'),
+  title: l('Моя история', 'My Story'),
   path: l(
     'Школа → журналистика → медицина → первая работа → самостоятельная жизнь → карьера → финансы',
     'School → journalism → medicine → first job → living on my own → career → finance',
   ),
   paragraphs: [
-    l('Я окончил школу. Ещё в Зеленодольске учился в школе журналистики.', 'I finished school. While still in Zelenodolsk, I studied at a school of journalism.'),
-    l('После школы передо мной встал выбор дальнейшего пути. Я поступал в медицинские учебные заведения и в Москве, и в Йошкар-Оле — и в итоге остановился на Йошкар-Оле, начав учиться в медицинском направлении.', 'After school I had to choose what came next. I applied to medical schools in both Moscow and Yoshkar-Ola, and in the end chose Yoshkar-Ola and started studying medicine.'),
-    l('Позже я понял, что медицина мне не откликается. Я забрал документы, начал работать и стал самостоятельно строить свой профессиональный путь.', 'Later I realised medicine did not resonate with me. I withdrew, started working and began building my professional path on my own.'),
-    l('Спустя время я снова вернулся к образованию — уже в Москве, на направлении «Финансы».', 'Some time later I came back to education — this time in Moscow, studying Finance.'),
+    l('Я окончил школу в Зеленодольске. Ещё там учился в школе журналистики.', 'I finished school in Zelenodolsk, where I also studied at a school of journalism.'),
+    l('После школы встал вопрос, куда двигаться дальше. Я поступал в медицинские учебные заведения и в Москве, и в Йошкар-Оле — и в итоге выбрал Йошкар-Олу, начав учиться в медицинском направлении.', 'After school I had to decide what came next. I applied to medical schools in both Moscow and Yoshkar-Ola — and chose Yoshkar-Ola, starting to study medicine.'),
+    l('Я был из небольшого города, и Москва тогда казалась чем-то очень далёким, недосягаемым и финансово сложным. Йошкар-Ола выглядела более реалистичным вариантом, чтобы начать самостоятельную жизнь.', 'I came from a small town, and Moscow felt very far away, out of reach and financially hard. Yoshkar-Ola looked like a more realistic place to start living on my own.'),
+    l('Позже я понял, что медицина мне не откликается. Забрал документы, начал работать и постепенно стал сам строить свой профессиональный путь.', 'Later I realised medicine did not resonate with me. I withdrew, started working and gradually began building my professional path on my own.'),
+    l('Спустя время я снова вернулся к образованию — уже в Москве, выбрав направление «Финансы».', 'Some time later I came back to education — this time in Moscow, choosing Finance.'),
     l('Я не всегда шёл по прямой, но шаг за шагом находил своё направление.', 'My path was not always a straight line, but step by step I found my direction.'),
   ],
-  /** Для резюме: только направление, без названий учебных заведений. */
-  resumeLine: l('Направление «Финансы», Москва — поступление в 2026 году', 'Finance, Moscow — enrolled in 2026'),
 }
 
 /* ───────────────────────── Notes: интересы и жизнь вне работы ───────────────────────── */
@@ -264,29 +234,33 @@ export const story = {
 export const motto = l('Мне всегда мало.', 'I always want more.')
 
 export const life = {
-  childhood: l(
-    'В детстве занимался в музыкальной школе, ходил на гимнастику, позже — тяжёлой атлетикой. Всё это было на любительском уровне, и со временем я это оставил.',
-    'As a kid I went to music school and gymnastics, and later did weightlifting. All of it was at an amateur level, and over time I let it go.',
+  /** Личная характеристика — в начале «Моей истории». */
+  character: l(
+    'Я очень любознательный человек: мне нравится узнавать новое, я не люблю стоять на месте и всё время ищу новые знания, впечатления и знакомства.',
+    'I am a very curious person: I like learning new things, I don’t like standing still, and I keep looking for new knowledge, experiences and people.',
   ),
-  now: [
-    l('Сейчас у меня гораздо больше разных интересов.', 'Today I have many more interests.'),
-    l('Люблю выставки и музеи — особенно фотовыставки. Мне интересны архитектура и психология.', 'I love exhibitions and museums — especially photo exhibitions. I am into architecture and psychology.'),
-    l('Смотрю фильмы в оригинале и потом обсуждаю их с друзьями. Читаю и художественную литературу, и книги по психологии и финансам.', 'I watch films in the original language and then discuss them with friends. I read fiction as well as books on psychology and finance.'),
-    l('Смотрю влоги людей, которые путешествуют, — и сам хочу путешествовать чаще и больше.', 'I watch travel vlogs — and want to travel more and more often myself.'),
-    l('Регулярно хожу в зал. Одно время играл в большой теннис. Люблю бассейн.', 'I go to the gym regularly. For a while I played tennis. I love swimming pools.'),
-    l('Мне интересна одежда — но не столько сама одежда, сколько её происхождение: история брендов, биографии основателей, развитие компаний.', 'I am into clothing — less the clothes themselves than where they come from: brand history, founders’ biographies and how companies grow.'),
-    l('Слежу за изменениями на рынке технологий: новые продукты, компании, идеи — и то, как меняется мир.', 'I follow the tech market: new products, companies, ideas — and how the world is changing.'),
+  interestsIntro: l(
+    'Помимо работы у меня довольно широкий круг интересов. Мне нравится исследовать новое — через книги, кино, выставки, путешествия, технологии и людей.',
+    'Outside work I have a fairly wide range of interests. I like exploring new things — through books, films, exhibitions, travel, technology and people.',
+  ),
+  interests: [
+    { title: l('Выставки и музеи', 'Exhibitions & museums'), text: l('Особенно люблю фотовыставки.', 'Photo exhibitions most of all.') },
+    { title: l('Архитектура', 'Architecture'), text: l('Интересно, как устроено пространство вокруг человека.', 'How the space around people is designed.') },
+    { title: l('Психология', 'Psychology'), text: l('Как люди думают, принимают решения и взаимодействуют друг с другом.', 'How people think, make decisions and interact.') },
+    { title: l('Кино', 'Cinema'), text: l('Смотрю фильмы в оригинале, а потом люблю обсуждать их с друзьями.', 'I watch films in the original and love discussing them with friends afterwards.') },
+    { title: l('Книги', 'Books'), text: l('Художественная литература, а также книги по психологии и финансам.', 'Fiction, as well as books on psychology and finance.') },
+    { title: l('Путешествия', 'Travel'), text: l('Смотрю влоги путешественников и сам хочу путешествовать чаще и больше.', 'I watch travel vlogs and want to travel more and more often myself.') },
+    { title: l('Спорт', 'Sport'), text: l('Регулярно хожу в зал. Одно время играл в большой теннис, люблю бассейн.', 'I go to the gym regularly. For a while I played tennis, and I love the pool.') },
+    { title: l('Одежда и история брендов', 'Clothing & brand history'), text: l('Не столько сама одежда, сколько её происхождение: история бренда, его развитие, биографии основателей, контекст появления и идеи, которые за ним стоят.', 'Less the clothes than their origins: a brand’s history and growth, its founders, the context it came from and the ideas behind it.') },
+    { title: l('Технологии', 'Technology'), text: l('Слежу за рынком: новые продукты, компании и идеи — и то, как технологии меняют мир вокруг.', 'I follow the market: new products, companies and ideas — and how technology changes the world around us.') },
   ],
-  curiosity: [
-    l('Я очень любознательный человек. Мне нравится узнавать что-то новое.', 'I am a very curious person. I love learning new things.'),
-    l('Не люблю стоять на месте.', 'I don’t like standing still.'),
+  childhood: l(
+    'В детстве занимался гимнастикой, позже — тяжёлой атлетикой, и учился в музыкальной школе по классу гитары. Всё это было на любительском уровне, и со временем я эти занятия оставил.',
+    'As a kid I did gymnastics, later weightlifting, and studied guitar at music school. All of it was at an amateur level, and over time I let it go.',
+  ),
+  curiousNow: [
     l('Я голоден до новой информации, новых впечатлений и новых знакомств.', 'I am hungry for new information, new experiences and new people.'),
-  ],
-  thingsILike: ['Museums', 'Exhibitions', 'Photography', 'Cinema', 'Books', 'Travel', 'Architecture', 'Technology', 'Fashion & Brand History', 'Psychology', 'Finance'],
-  curiousAbout: ['Architecture', 'Psychology', 'Technology', 'Cinema', 'Fashion', 'Brand History', 'Finance', 'Travel'],
-  nextChapter: [
-    l('Возвращение к образованию: направление «Финансы», Москва.', 'Back to education: Finance, Moscow.'),
-    l('Карьерные консультации — делиться опытом с другими.', 'Career consulting — sharing experience with others.'),
+    l('Мне интересно узнавать новое, пробовать непривычное, знакомиться с людьми с другим опытом и смотреть на привычные вещи с новых сторон.', 'I like learning, trying the unfamiliar, meeting people with different experience and looking at familiar things from new angles.'),
   ],
 }
 
@@ -294,7 +268,7 @@ export const life = {
 
 export const nonprofit = {
   id: 'foodbank',
-  badge: l('NONPROFIT EXPERIENCE', 'NONPROFIT EXPERIENCE'),
+  badge: l('ПАРАЛЛЕЛЬНЫЙ ОПЫТ', 'PARALLEL EXPERIENCE'),
   org: l('Благотворительный фонд «Банк еды „Русь“»', 'Food Bank “Rus” charity foundation'),
   short: l('Банк еды «Русь»', 'Food Bank “Rus”'),
   role: l('Фандрайзер', 'Fundraiser'),
@@ -311,8 +285,9 @@ export const nonprofit = {
     l('Презентация идеи', 'Presenting the idea'),
     l('Социальная ответственность', 'Social responsibility'),
   ],
-  // NEED: точные даты, город, результаты — только если Богдан их предоставит
   exactDates: null as string | null,
+  /** Файл (например, благодарственное письмо) — положите в /public и укажите путь. */
+  file: null as string | null,
 }
 
 /* ───────────────────────── Certificates (Сбер) ─────────────────────────

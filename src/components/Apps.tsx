@@ -25,6 +25,7 @@ export function FolderBody({ id }: { id: string }) {
   const kids = f.children.map((c) => itemById[c]).filter(Boolean)
   return (
     <div className="bg-white min-h-[220px] m-[10px] mt-[8px] rounded-[4px]">
+      {f.intro && <p className="px-[14px] pt-[12px] text-[13px] leading-[1.35] text-[#555] select-text">{t(f.intro)}</p>}
       <div className="grid gap-x-[6px] gap-y-[14px] p-[14px]" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))' }}>
         {kids.map((it) => (
           <button
@@ -51,19 +52,17 @@ export function FolderBody({ id }: { id: string }) {
 
 /* ───────── Notes.app ───────── */
 
-type NoteId = 'about' | 'story' | 'like' | 'curious' | 'life' | 'next'
+type NoteId = 'story' | 'interests' | 'now'
 
 export function NotesBody({ initial, mobile }: { initial?: string; mobile: boolean }) {
   const { t, tt } = useLang()
   const notes: { id: NoteId; title: string; preview: string }[] = [
-    { id: 'about', title: tt('Обо мне', 'About me'), preview: t(motto) },
-    { id: 'story', title: 'My Story', preview: t(story.paragraphs[0]) },
-    { id: 'like', title: 'Things I Like', preview: life.thingsILike.slice(0, 4).join(', ') },
-    { id: 'curious', title: 'Currently Curious About', preview: life.curiousAbout.slice(0, 4).join(', ') },
-    { id: 'life', title: tt('Жизнь вне работы', 'Life outside work'), preview: t(life.now[1]) },
-    { id: 'next', title: 'Next Chapter', preview: t(life.nextChapter[0]) },
+    { id: 'story', title: t(story.title), preview: t(motto) },
+    { id: 'interests', title: tt('Что мне интересно', 'What I’m into'), preview: life.interests.slice(0, 4).map((x) => t(x.title)).join(', ') },
+    { id: 'now', title: tt('Сейчас мне интересно', 'Curious about right now'), preview: t(life.curiousNow[0]) },
   ]
-  const [sel, setSel] = useState<NoteId | null>((initial as NoteId) ?? (mobile ? null : 'about'))
+  const valid = notes.some((n) => n.id === initial) ? (initial as NoteId) : null
+  const [sel, setSel] = useState<NoteId | null>(valid ?? (mobile ? null : 'story'))
   const list = (
     <aside className={`${mobile ? 'w-full' : 'w-[190px] border-r border-black/10'} shrink-0 py-[8px] px-[8px]`}>
       {notes.map((n) => (
@@ -75,7 +74,7 @@ export function NotesBody({ initial, mobile }: { initial?: string; mobile: boole
     </aside>
   )
   const page = sel && (
-    <div className="flex-1 min-w-0 bg-white px-[18px] py-[14px] text-[13px] leading-[1.4] select-text">
+    <div className="flex-1 min-w-0 bg-white px-[18px] py-[14px] text-[13px] leading-[1.45] select-text">
       {mobile && <button className="text-[12.5px] text-[#d4a400] mb-[8px] flex items-center" onClick={() => setSel(null)}><ChevronLeft size={14} />{tt('Заметки', 'Notes')}</button>}
       <AnimatePresence mode="wait">
         <motion.div key={sel} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.14 }}>
@@ -91,44 +90,41 @@ export function NotesBody({ initial, mobile }: { initial?: string; mobile: boole
 function NotePage({ id }: { id: NoteId }) {
   const { t, tt } = useLang()
   const h = (x: string) => <h2 className="text-[20px] font-bold mb-[8px]">{x}</h2>
-  const tags = (xs: string[]) => (
-    <div className="flex flex-wrap gap-[6px] mt-[4px]">{xs.map((x) => <span key={x} className="px-[9px] py-[3px] rounded-full bg-black/[0.05] text-[12.5px]">{x}</span>)}</div>
-  )
   switch (id) {
-    case 'about':
+    case 'story':
       return (
         <>
           <div className="text-[34px] leading-[1.05] font-black tracking-[-0.02em] mb-[12px]">{t(motto)}</div>
           <p>{t(profile.bio)}</p>
-          {life.curiosity.map((p, i) => <p key={i} className="mt-[6px]">{t(p)}</p>)}
-        </>
-      )
-    case 'story':
-      return (
-        <>
-          {h('My Story')}
+          <p className="mt-[6px]">{t(life.character)}</p>
+          <div className="h-px bg-black/10 my-[14px]" />
+          {h(t(story.title))}
           <p className="text-[12px] text-black/50 mb-[10px]">{t(story.path)}</p>
           {story.paragraphs.map((p, i) => <p key={i} className={`mt-[6px] ${i === story.paragraphs.length - 1 ? 'font-semibold' : ''}`}>{t(p)}</p>)}
         </>
       )
-    case 'like':
-      return <>{h('Things I Like')}{tags(life.thingsILike)}</>
-    case 'curious':
-      return <>{h('Currently Curious About')}{tags(life.curiousAbout)}<p className="mt-[12px] font-semibold">{t(life.curiosity[2])}</p></>
-    case 'life':
+    case 'interests':
       return (
         <>
-          {h(tt('Жизнь вне работы', 'Life outside work'))}
-          {life.now.map((p, i) => <p key={i} className="mt-[6px]">{t(p)}</p>)}
-          <p className="mt-[12px] text-black/55">{t(life.childhood)}</p>
+          {h(tt('Что мне интересно', 'What I’m into'))}
+          <p>{t(life.interestsIntro)}</p>
+          <dl className="mt-[10px] space-y-[8px]">
+            {life.interests.map((x) => (
+              <div key={x.title.ru}>
+                <dt className="font-semibold">{t(x.title)}</dt>
+                <dd className="text-black/70">{t(x.text)}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-[14px] text-black/55">{t(life.childhood)}</p>
         </>
       )
-    case 'next':
+    case 'now':
       return (
         <>
-          {h('Next Chapter')}
-          <ul className="list-disc pl-[18px] space-y-[4px]">{life.nextChapter.map((p, i) => <li key={i}>{t(p)}</li>)}</ul>
-          <div className="mt-[12px]"><Need label={tt('планы на следующую главу', 'next chapter plans')} /></div>
+          {h(tt('Сейчас мне интересно', 'Curious about right now'))}
+          <p className="text-[18px] font-semibold leading-[1.3]">{t(life.curiousNow[0])}</p>
+          <p className="mt-[8px]">{t(life.curiousNow[1])}</p>
         </>
       )
   }
@@ -201,7 +197,7 @@ export function PressBody({ id }: { id: string }) {
 /* ───────── Career Timeline ───────── */
 
 const groupOf = (employer: string) =>
-  employer === 'early' ? 'FIRST JOBS' : employer === 'sber' ? 'SBERBANK' : employer === 'tbank' ? 'T-BANK' : 'YANDEX · DOMILEND'
+  employer === 'sber' ? 'СБЕР' : employer === 'tbank' ? 'Т-БАНК' : 'ДОМИЛЕНД · ЯНДЕКС'
 
 export function TimelineBody() {
   const { t, tt } = useLang()

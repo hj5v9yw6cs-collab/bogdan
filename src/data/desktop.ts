@@ -42,14 +42,12 @@ export type Item = {
 }
 
 /** Folder contents: item ids shown in a Finder-like grid. */
-export type FolderDef = { id: string; title: L; glyph: FolderGlyph; children: string[]; empty?: L }
+export type FolderDef = { id: string; title: L; glyph: FolderGlyph; children: string[]; empty?: L; intro?: L; cover?: Thumb }
 
 
 /* ───────── Карьера: один «файл» на каждый этап ───────── */
 
 const covers: Record<string, Thumb> = {
-  'early-cc': { kind: 'cover', bg: 'linear-gradient(140deg,#e7e4dd,#a7a39b)', ink: '#151515', big: 'CALL\nCENTER', small: '2020' },
-  'early-lp': { kind: 'cover', bg: 'linear-gradient(140deg,#3a3a3a,#0e0e0e)', ink: '#f2f2f2', big: 'LOSS\nPREV.', small: '2021' },
   'sber-sales': { kind: 'cover', bg: 'linear-gradient(140deg,#0b3d24,#21a038)', ink: '#ffffff', big: 'СБЕР\n01', small: '2021' },
   'sber-premium': { kind: 'cover', bg: 'linear-gradient(140deg,#0d1f17,#1e3b2c 55%,#c9a96a)', ink: '#f3e2b8', big: 'PRE\nMIER', small: '2022' },
   'sber-corp': { kind: 'cover', bg: 'linear-gradient(140deg,#21a038,#b6ec7a)', ink: '#06210c', big: 'CORP', small: '2022' },
@@ -61,16 +59,14 @@ const covers: Record<string, Thumb> = {
 }
 
 const stageLabels: Record<string, L> = {
-  'early-cc': l('Ситистафф', 'Citystaff'),
-  'early-lp': l('Лабиринт-Волга', 'Labirint-Volga'),
-  'sber-sales': l('Сбер · продажи', 'Sber · sales'),
-  'sber-premium': l('Сбер · Премьер', 'Sber · Premier'),
-  'sber-corp': l('Сбер · корпоратив', 'Sber · corporate'),
-  'sber-key': l('Сбер · ключевые', 'Sber · key clients'),
-  'sber-apk': l('Сбер · АПК', 'Sber · agribusiness'),
-  'tbank-mid': l('Т-Банк 2025', 'T-Bank 2025'),
-  domilend: l('Домиленд', 'Domilend'),
-  'tbank-midlarge': l('Т-Банк · СКБ', 'T-Bank · mid & large'),
+  'sber-sales': l('Клиентский менеджер', 'Client manager'),
+  'sber-premium': l('Премьер', 'Premier'),
+  'sber-corp': l('Корпоративные клиенты', 'Corporate clients'),
+  'sber-key': l('Ключевые клиенты', 'Key clients'),
+  'sber-apk': l('Крупный и средний бизнес', 'Large & mid business'),
+  'tbank-mid': l('Средний бизнес', 'Middle business'),
+  domilend: l('Домиленд · Яндекс', 'Domilend · Yandex'),
+  'tbank-midlarge': l('Средний и крупный бизнес', 'Mid & large business'),
 }
 
 const stageItems: Item[] = stages.map((s) => {
@@ -145,8 +141,8 @@ const otherItems: Item[] = [
     title: l('Bogdan_Starogorodtsev_Resume.pdf', 'Bogdan_Starogorodtsev_Resume.pdf'),
     subtitle: l('PDF · 1 страница', 'PDF · 1 page'),
     text: [l(
-      `Вся трудовая история по выписке СФР: ранний опыт, девять записей в Сбербанке, Т-Банк и Домиленд. ${profile.currentRole.ru}, ${profile.currentCompany.ru}.`,
-      `Full employment history from the official record: early jobs, nine records at Sberbank, T-Bank and Domilend. ${profile.currentRole.en}, ${profile.currentCompany.en}.`,
+      `Карьерная история по выписке СФР: девять записей в Сбербанке, Т-Банк и Домиленд. ${profile.currentRole.ru}, ${profile.currentCompany.ru}.`,
+      `Career history from the official record: nine records at Sberbank, T-Bank and Domilend. ${profile.currentRole.en}, ${profile.currentCompany.en}.`,
     )],
     type: l('Документы > Резюме', 'Documents > Resume'),
     resumePreview: true,
@@ -176,6 +172,7 @@ const archiveItems: Item[] = [
     subtitle: nonprofit.org,
     text: [nonprofit.description, nonprofit.note],
     type: l(`${nonprofit.badge.ru} > Фандрайзинг`, `${nonprofit.badge.en} > Fundraising`),
+    actions: nonprofit.file ? [{ label: l('Открыть файл', 'Open file'), href: nonprofit.file }] : [],
     rows: [
       { k: l('Период', 'Period'), v: nonprofit.period },
       { k: l('Роль', 'Role'), v: nonprofit.role },
@@ -184,14 +181,14 @@ const archiveItems: Item[] = [
   },
   {
     id: 'timeline',
-    label: l('Career Timeline', 'Career Timeline'),
+    label: l('Карьера', 'Career'),
     thumb: { kind: 'icon', icon: 'timeline' },
     title: l('Career Timeline', 'Career Timeline'), subtitle: profile.name, text: [], type: l('Карьера', 'Career'),
     open: { app: 'timeline', params: {}, key: 'timeline' },
   },
   {
     id: 'my-story',
-    label: l('My Story', 'My Story'),
+    label: l('Моя история', 'My Story'),
     thumb: { kind: 'note' },
     title: story.title, subtitle: profile.name, text: [], type: l('Notes', 'Notes'),
     open: { app: 'notes', params: { note: 'story' }, key: 'notes' },
@@ -244,6 +241,17 @@ export function fmtDate(iso: string) {
 }
 
 export const folders: Record<string, FolderDef> = {
+  sber: {
+    id: 'sber', title: employerById.sber.name, glyph: 'career', intro: employerById.sber.summary,
+    children: stages.filter((s) => s.employer === 'sber').map((s) => s.id),
+    cover: { kind: 'cover', bg: 'linear-gradient(140deg,#0b3d24,#21a038)', ink: '#ffffff', big: 'СБЕР', small: '2021 — 2025' },
+  },
+  tbank: {
+    id: 'tbank', title: employerById.tbank.name, glyph: 'career', intro: employerById.tbank.summary,
+    children: stages.filter((s) => s.employer === 'tbank').map((s) => s.id),
+    cover: { kind: 'cover', bg: '#ffdd2d', ink: '#121212', big: 'Т', small: '2025 —' },
+  },
+  photos: { id: 'photos', title: l('Фото', 'Photos'), glyph: 'photos', children: photoItems.map((i) => i.id) },
   cities: { id: 'cities', title: l('Города', 'Cities'), glyph: 'photos', children: cityItems.map((i) => i.id) },
   certificates: { id: 'certificates', title: l('Сертификаты', 'Certificates'), glyph: 'education', children: certItems.map((i) => i.id), empty: l('Здесь появятся сертификаты и документы об обучении в Сбере.', 'Sber certificates and training documents will appear here.') },
   press: { id: 'press', title: l('Пресса', 'Press'), glyph: 'contact', children: pressItems.map((i) => i.id) },
@@ -251,7 +259,7 @@ export const folders: Record<string, FolderDef> = {
 }
 
 const folderItems: Item[] = Object.values(folders).map((f) => ({
-  id: `f-${f.id}`, label: f.title, thumb: { kind: 'folder', glyph: f.glyph }, title: f.title, subtitle: profile.name, text: [], type: l('Папка', 'Folder'),
+  id: `f-${f.id}`, label: f.title, thumb: f.cover ?? { kind: 'folder', glyph: f.glyph }, title: f.title, subtitle: profile.name, text: [], type: l('Папка', 'Folder'),
   open: { app: 'folder', params: { folder: f.id }, key: `folder:${f.id}` },
 }))
 
@@ -259,17 +267,6 @@ export const items: Item[] = [...stageItems, ...cityItems, ...photoItems, ...oth
 export const itemById = Object.fromEntries(items.map((i) => [i.id, i])) as Record<string, Item>
 
 /* ───────── Окна из Dock ───────── */
-
-export const gallery: Item = {
-  id: 'gallery',
-  label: l('Фото', 'Photos'),
-  thumb: { kind: 'icon', icon: 'photos' },
-  title: l('Галерея', 'Gallery'),
-  subtitle: l('Портреты и моменты', 'Portraits and moments'),
-  text: [],
-  type: l('Фото', 'Photos'),
-  preview: photos.filter((p) => p.src).map((p) => ({ src: p.src, palette: p.palette, caption: p.title })),
-}
 
 export const bin: Item = {
   id: 'bin',
@@ -300,15 +297,13 @@ export const links = {
 /* ───────── Расположение иконок (центр иконки в % экрана) ───────── */
 
 const desktopSlots: [number, number][] = [
-  [23, 19], [32, 22], [41, 27], [20, 32], [29, 37], [20, 47], [40, 41], [49, 33], [58, 19], [66, 15],
-  [61, 32], [55, 45], [47, 54], [37, 57], [41, 68], [29, 50], [19, 61], [28, 64], [76, 30], [84, 37],
-  [91, 46], [71, 50], [80, 57],
+  [27, 24], [40, 30], [52, 21], [63, 34], [33, 45], [19, 39], [61, 14], [72, 22], [46, 50], [23, 58],
+  [36, 64], [79, 46], [89, 31], [66, 57],
 ]
 
 const order = [
-  'early-cc', 'f-cities', 'sber-sales', 'my-story', 'early-lp', 'p-boutique', 'sber-premium', 'sber-corp', 'resume', 'p-studio',
-  'sber-key', 'sber-apk', 'tbank-mid', 'nonprofit', 'f-certificates', 'f-press', 'contact', 'p-tuxedo', 'timeline', 'domilend',
-  'consulting', 'tbank-midlarge', 'f-projects',
+  'f-sber', 'f-tbank', 'domilend', 'nonprofit', 'timeline', 'my-story', 'resume', 'f-photos', 'f-cities', 'f-certificates',
+  'f-press', 'f-projects', 'consulting', 'contact',
 ]
 
 // Mobile: a loose three-column scatter to the right of the vertical Dock.

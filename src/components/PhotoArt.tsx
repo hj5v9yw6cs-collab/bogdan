@@ -7,7 +7,7 @@ import { SHOW_NEED_MARKERS } from '../data/content'
  * Replacing a placeholder = dropping a file into /public/photos (see content.ts).
  */
 export function PhotoArt({
-  src, palette, label, sub, className = '', rounded = 'rounded-xl', big = false, position = 'center', hint = true, style,
+  src, palette, label, sub, className = '', rounded = 'rounded-xl', big = false, position = 'center', hint = true, style, zoom = 1,
 }: {
   src?: string
   palette: [string, string, string]
@@ -20,6 +20,8 @@ export function PhotoArt({
   /** Show the expected file path when the photo is missing. */
   hint?: boolean
   style?: CSSProperties
+  /** Crop in on `position` (e.g. a face in a full-length photo). */
+  zoom?: number
 }) {
   const [failed, setFailed] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -35,7 +37,7 @@ export function PhotoArt({
           onError={() => setFailed(true)}
           onLoad={() => setLoaded(true)}
           className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-          style={{ objectPosition: position }}
+          style={{ objectPosition: position, transform: zoom !== 1 ? `scale(${zoom})` : undefined, transformOrigin: position }}
         />
       )}
       {!(showImg && loaded) && (

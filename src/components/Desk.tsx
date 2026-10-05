@@ -4,7 +4,7 @@ import { useWindows } from '../store/windows'
 import { useLang } from '../lib/i18n'
 import { useIsMobile } from '../lib/hooks'
 import { certificates, portraits, publications } from '../data/content'
-import { alerts, bin, desktopOrder, folders, gallery, itemById, layout, links } from '../data/desktop'
+import { alerts, bin, desktopOrder, folders, itemById, layout, links } from '../data/desktop'
 import { Thumb } from './Thumb'
 import { Panel } from './Panel'
 import { AlertBody, InfoBody } from './Bodies'
@@ -40,20 +40,23 @@ export function Desk() {
 }
 
 function Wallpaper() {
+  // Close-up portrait as the desktop picture: softened and darkened so white labels stay readable.
   return (
-    <div className="absolute inset-0 bg-[#f1f1f1] pointer-events-none">
+    <div className="absolute inset-0 bg-[#1b1b1d] pointer-events-none overflow-hidden">
       <motion.img
-        src={portraits.hero.src}
+        src={portraits.avatar.src}
         alt=""
         draggable={false}
-        initial={{ opacity: 0, scale: 1.06 }}
+        initial={{ opacity: 0, scale: 1.08 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[124%] max-w-none object-cover"
-        style={{ filter: 'blur(14px) contrast(1.05)', aspectRatio: '1 / 1' }}
+        className="absolute inset-0 size-full object-cover"
+        style={{ objectPosition: '50% 38%', filter: 'blur(6px) saturate(0.9)' }}
         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
       />
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 62% 70% at 50% 52%, rgba(241,241,241,0) 40%, rgba(241,241,241,0.85) 78%, #f1f1f1 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,12,0.30) 0%, rgba(10,10,12,0.18) 45%, rgba(10,10,12,0.55) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 75% 70% at 50% 45%, transparent 45%, rgba(10,10,12,0.55) 100%)' }} />
+      <div className="absolute inset-0 grain opacity-70" />
     </div>
   )
 }
@@ -172,7 +175,7 @@ function Windows({ bounds, mobile }: { bounds: { w: number; h: number }; mobile:
             </Panel>
           )
         }
-        const item = w.params.item === 'gallery' ? gallery : w.params.item === 'bin' ? bin : itemById[w.params.item]
+        const item = w.params.item === 'bin' ? bin : itemById[w.params.item]
         return (
           <Panel key={w.id} win={w} title={`${info}: ${t(item.title)}`} width={576} height={item.preview?.length || item.resumePreview ? 560 : undefined} bounds={bounds} mobile={mobile} focused={focused}>
             <InfoBody item={item} />
@@ -194,7 +197,7 @@ function Dock({ mobile }: { mobile: boolean }) {
     ...alerts.map((a) => ({ id: a.id, icon: a.icon as IconKind, tip: t(a.app), onClick: () => open('alert', { alert: a.id }, `alert:${a.id}`) })),
     'sep',
     { id: 'notes', icon: 'notes', tip: 'Notes', onClick: () => open('notes', {}, 'notes') },
-    { id: 'gallery', icon: 'photos', tip: tt('Галерея', 'Gallery'), onClick: () => open('info', { item: 'gallery' }, 'info:gallery') },
+    { id: 'photos', icon: 'photos', tip: tt('Фото', 'Photos'), onClick: () => open('folder', { folder: 'photos' }, 'folder:photos') },
     { id: 'press', icon: 'safari', tip: tt('Пресса', 'Press'), onClick: () => open('folder', { folder: 'press' }, 'folder:press') },
     'sep',
     { id: 'instagram', icon: 'instagram', tip: 'Instagram', onClick: go(links.instagram) },
